@@ -37,18 +37,20 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'unique:courses,name']
+            'name' => ['required', 'unique:courses,name'],
+            'duration' => ['required']
         ]);
 
         $data = [
             'name' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
+            'duration' => $request->duration
         ];
 
         $is_course_created = Course::create($data);
 
         if ($is_course_created) {
-            return back()->with('success', 'Course has been created successfully');
+            return back()->with('success', 'Course has been successfully created');
         } else {
             return back()->with('success', 'Course has failed to create');
         }
@@ -85,7 +87,31 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        return dd($request->all());
+        $request->validate([
+            'name' => ['required', 'unique:courses,name,' . $course->id . ',id'],
+            'duration' => ['required']
+        ]);
+
+        if ($request->status) {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'duration' => $request->duration,
+            'status' => $status
+        ];
+
+        $is_course_upated = Course::find($course->id)->update($data);
+
+        if ($is_course_upated) {
+            return back()->with('success', 'Course has been successfully updated');
+        } else {
+            return back()->with('success', 'Course has failed to update');
+        }
     }
 
     /**

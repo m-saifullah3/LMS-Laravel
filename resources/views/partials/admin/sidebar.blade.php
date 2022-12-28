@@ -10,6 +10,11 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Courses
             </a>
+
+            <a class="nav-link" href="{{ route('admin.shifts') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Shifts
+            </a>
         </div>
     </div>
     <div class="sb-sidenav-footer">

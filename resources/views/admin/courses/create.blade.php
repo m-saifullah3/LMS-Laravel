@@ -35,6 +35,17 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="duration">Duration</label>
+                                <input type="text" class="form-control @error('duration') is-invalid @enderror"
+                                    id="duration" name="duration" value="{{ old('duration') }}"
+                                    placeholder="Enter the course duration">
+
+                                @error('duration')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="description">Description</label>
                                 <textarea name="description" class="form-control" id="description" cols="30" rows="3" placeholder="Enter the course description">{{ old('description') }}</textarea>
                             </div>

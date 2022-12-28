@@ -25,11 +25,20 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="name" name="name" value="{{ old('name') ? old('name') : $course->name }}"
-                                    placeholder="Enter the course name">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') ? old('name') : $course->name }}" placeholder="Enter the course name">
 
                                 @error('name')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="duration">Duration</label>
+                                <input type="text" class="form-control @error('duration') is-invalid @enderror"
+                                    id="duration" name="duration" value="{{ old('duration') ? old('duration') : $course->duration }}"
+                                    placeholder="Enter the course duration">
+
+                                @error('duration')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -46,10 +55,6 @@
                                     <input class="form-check-input" type="checkbox" role="switch" name="status" id="status" @if ($course->status == 1) checked @endif>
                                     <label class="form-check-label" for="status">Mark to active</label>
                                 </div>
-    
-                                @error('name')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
                             </div>
 
                             <div>

@@ -25,6 +25,7 @@
                                         <th>Sr. No.</th>
                                         <th>Name</th>
                                         <th>Des.</th>
+                                        <th>Duration</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -41,6 +42,7 @@
                                                     N/A
                                                 @endif
                                             </td>
+                                            <td>{{ $course->duration }}</td>
                                             <td>
                                                 @if ($course->status == 1)
                                                     <span class="badge bg-success">Active</span>
