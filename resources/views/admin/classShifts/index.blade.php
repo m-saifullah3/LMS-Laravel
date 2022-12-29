@@ -33,8 +33,8 @@
                                     @foreach ($shifts as $shift)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $shift->start }}</td>
-                                            <td>{{ $shift->end }}</td>
+                                            <td>{{ $shift->start->format('h:i A') }}</td>
+                                            <td>{{ $shift->end->format('h:i A') }}</td>
                                             <td>{{ $shift->shift }}</td>
                                             <td>
                                                 <a href="{{ route('admin.shift.edit', $shift) }}" class="btn btn-primary">Edit</a>

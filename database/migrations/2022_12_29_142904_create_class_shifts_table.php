@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_shifts');
+        Schema::table('class_shifts', function (Blueprint $table) {
+            //
+        });
     }
 };

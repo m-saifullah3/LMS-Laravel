@@ -15,4 +15,9 @@ class Course extends Model
         'duration',
         'status'
     ];
+    
+
+    public function batches() {
+        return $this->hasMany(Batch::class);
+    }
 }

@@ -15,6 +15,11 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Shifts
             </a>
+
+            <a class="nav-link" href="{{ route('admin.batches') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Batches
+            </a>
         </div>
     </div>
     <div class="sb-sidenav-footer">

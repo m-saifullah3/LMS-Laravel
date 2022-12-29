@@ -26,7 +26,7 @@
                             <div class="mb-3">
                                 <label for="start">Start Time</label>
                                 <input type="time" class="form-control @error('start') is-invalid @enderror"
-                                    id="start" name="start" value="{{ old('start') }}" placeholder="Enter the course start">
+                                    id="start" name="start" value="{{ old('start') ? old('start') : $shift->start->format('H:i') }}" placeholder="Enter the course start">
 
                                 @error('start')
                                     <p class="text-danger">{{ $message }}</p>
@@ -36,7 +36,7 @@
                             <div class="mb-3">
                                 <label for="end">End Time</label>
                                 <input type="time" class="form-control @error('end') is-invalid @enderror"
-                                    id="end" name="end" value="{{ old('end') }}" placeholder="Enter the course end">
+                                    id="end" name="end" value="{{ old('end') ? old('end') : $shift->end->format('H:i') }}" placeholder="Enter the course end">
 
                                 @error('end')
                                     <p class="text-danger">{{ $message }}</p>
@@ -46,7 +46,7 @@
                             <div class="mb-3">
                                 <label for="shift">Shift</label>
                                 <input type="text" class="form-control @error('shift') is-invalid @enderror"
-                                    id="shift" name="shift" value="{{ old('shift') }}"
+                                    id="shift" name="shift" value="{{ old('shift') ? old('shift') : $shift->shift }}"
                                     placeholder="Enter the course shift">
 
                                 @error('shift')

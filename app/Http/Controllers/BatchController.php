@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\ClassShift;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class BatchController extends Controller
@@ -14,7 +16,8 @@ class BatchController extends Controller
      */
     public function index()
     {
-        //
+        $batches = Batch::with('course', 'class_shift')->get();
+        return view('admin.batches.index', ['batches' => $batches]);
     }
 
     /**
@@ -24,7 +27,11 @@ class BatchController extends Controller
      */
     public function create()
     {
-        //
+        $data = [
+            'shifts' => ClassShift::all(),  
+            'courses' => Course::all(),  
+        ];
+        return view('admin.batches.create', $data);
     }
 
     /**
@@ -35,7 +42,27 @@ class BatchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'course' => ['required'],
+            'shift' => ['required'],
+            'starting_date' => ['required'],
+            'ending_date' => ['required'],
+        ]);
+
+        $data = [
+            'course_id' => $request->course,
+            'class_shift_id' => $request->shift,
+            'starting_date' => $request->starting_date,
+            'ending_date' => $request->ending_date,
+            'seats' => 20,
+        ];
+
+        $is_batch_created = Batch::create($data);
+        if ($is_batch_created) {
+            return back()->with('success', 'Batch has been successfully created');
+        } else {
+            return back()->with('success', 'Batch has failed to create');
+        }
     }
 
     /**
@@ -57,7 +84,12 @@ class BatchController extends Controller
      */
     public function edit(Batch $batch)
     {
-        //
+        $data = [
+            'shifts' => ClassShift::all(),  
+            'courses' => Course::all(),
+            'batch' => $batch
+        ];
+        return view('admin.batches.edit', $data);
     }
 
     /**

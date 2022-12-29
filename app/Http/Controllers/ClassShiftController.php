@@ -77,9 +77,7 @@ class ClassShiftController extends Controller
     public function edit(ClassShift $shift)
 
     {
-
         return view('admin.classShifts.edit', ['shift' => $shift]);
-        // return dd( $Shift);
     }
 
     /**
@@ -89,9 +87,27 @@ class ClassShiftController extends Controller
      * @param  \App\Models\ClassShift  $classShift
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClassShift $classShift)
+    public function update(Request $request, ClassShift $shift)
     {
-        //
+        $request->validate([
+            'start' => ['required'],
+            'end' => ['required'],
+            'shift' => ['required', 'unique:class_shifts,shift,' . $shift->id . ',id'],
+        ]);
+
+        $data = [
+            'start' => $request->start,
+            'end' => $request->end,
+            'shift' => $request->shift
+        ];
+
+        $is_shift_updated = ClassShift::find($shift->id)->update($data);
+
+        if ($is_shift_updated) {
+            return back()->with('success', 'Class Shift has been successfully updated');
+        } else {
+            return back()->with('success', 'Class Shift has failed to update');
+        }
     }
 
     /**

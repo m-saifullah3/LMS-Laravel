@@ -14,4 +14,14 @@ class ClassShift extends Model
         'end',
         'shift',
     ];
+
+    protected $dates = [
+        'start',
+        'end'
+    ];
+
+
+    public function batches() {
+        return $this->hasMany(Batch::class);
+    }
 }

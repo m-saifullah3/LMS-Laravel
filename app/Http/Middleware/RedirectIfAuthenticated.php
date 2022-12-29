@@ -23,7 +23,17 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $user = Auth::user();
+                $user_type = strtolower($user->user_type);
+                if ($user_type == 'admin') {
+                    return redirect()->route('admin.dashboard');
+                } elseif ($user_type == 'teacher') {
+                    return redirect()->route('teacher.dashboard');
+                } elseif ($user_type == 'student') {
+                    return redirect()->route('student.dashboard');
+                }
+                
+                // return redirect(RouteServiceProvider::HOME);
             }
         }
 

@@ -3,8 +3,11 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\LogoutController;
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ClassShiftController;
 use App\Http\Controllers\CourseController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfAuthenticated;
 // use App\Models\Role;
 // use App\Models\User;
 // use Illuminate\Support\Facades\Hash;
@@ -21,15 +24,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(LoginController::class)->group(function () {
-     
+Route::controller(LoginController::class)->middleware(RedirectIfAuthenticated::class)->group(function () {
+    Route::get('/', 'view')->name('home');
     Route::get('/login', 'view')->name('login');
     Route::post('/login', 'login');
 });
 
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->name('admin.')->group(function() {
+Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function() {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::controller(CourseController::class)->group(function () {
@@ -46,6 +49,14 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::post('add/shift', 'store');
         Route::get('edit/{shift}/shift', 'edit')->name('shift.edit');
         Route::post('edit/{shift}/shift', 'update');
+    });
+
+    Route::controller(BatchController::class)->group(function () {
+        Route::get('batches', 'index')->name('batches');
+        Route::get('add/batch', 'create')->name('batch.create');
+        Route::post('add/batch', 'store');
+        Route::get('edit/{batch}/batch', 'edit')->name('batch.edit');
+        Route::post('edit/{batch}/batch', 'update');
     });
 
 });
