@@ -53,7 +53,7 @@ class ClassShiftController extends Controller
         if ($is_shift_created) {
             return back()->with('success', 'Class Shift has been successfully created');
         } else {
-            return back()->with('success', 'Class Shift has failed to create');
+            return back()->with('error', 'Class Shift has failed to create');
         }
     }
 
@@ -106,7 +106,7 @@ class ClassShiftController extends Controller
         if ($is_shift_updated) {
             return back()->with('success', 'Class Shift has been successfully updated');
         } else {
-            return back()->with('success', 'Class Shift has failed to update');
+            return back()->with('error', 'Class Shift has failed to update');
         }
     }
 

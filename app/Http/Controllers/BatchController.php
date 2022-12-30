@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Batch;
 use App\Models\ClassShift;
 use App\Models\Course;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BatchController extends Controller
@@ -45,15 +46,22 @@ class BatchController extends Controller
         $request->validate([
             'course' => ['required'],
             'shift' => ['required'],
-            'starting_date' => ['required'],
-            'ending_date' => ['required'],
+            'starting_date' => ['required']
         ]);
+
+        $course = Course::find($request->course);
+
+        $course_duration = explode(' ', $course->duration);
+        $course_duration = $course_duration[0];
+
+        $start_date = Carbon::createFromFormat('Y-m-d', $request->starting_date);
+        $end_date = $start_date->addDays(($course_duration * 7) - 3);
 
         $data = [
             'course_id' => $request->course,
             'class_shift_id' => $request->shift,
             'starting_date' => $request->starting_date,
-            'ending_date' => $request->ending_date,
+            'ending_date' => $end_date,
             'seats' => 20,
         ];
 
@@ -61,7 +69,7 @@ class BatchController extends Controller
         if ($is_batch_created) {
             return back()->with('success', 'Batch has been successfully created');
         } else {
-            return back()->with('success', 'Batch has failed to create');
+            return back()->with('error', 'Batch has failed to create');
         }
     }
 
@@ -101,7 +109,34 @@ class BatchController extends Controller
      */
     public function update(Request $request, Batch $batch)
     {
-        //
+        $request->validate([
+            'course' => ['required'],
+            'shift' => ['required'],
+            'starting_date' => ['required'],
+            'ending_date' => ['required'],
+        ]);
+
+        if ($request->status) {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+
+        $data = [
+            'course_id' => $request->course,
+            'class_shift_id' => $request->shift,
+            'starting_date' => $request->starting_date,
+            'ending_date' => $request->ending_date,
+            'seats' => $request->seats,
+            'status' => $status,
+        ];
+
+        $is_batch_updated = Batch::find($batch->id)->update($data);
+        if ($is_batch_updated) {
+            return back()->with('success', 'Batch has been successfully updated');
+        } else {
+            return back()->with('error', 'Batch has failed to update');
+        }
     }
 
     /**

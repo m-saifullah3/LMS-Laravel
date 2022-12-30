@@ -60,15 +60,6 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="ending_date">Ending Date</label>
-                            <input type="date" class="form-control @error('ending_date') is-invalid @enderror" id="ending_date" name="ending_date" value="{{ old('ending_date') }}">
-
-                            @error('ending_date')
-                                <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <div>
                             <input type="submit" value="Submit" class="btn btn-primary">
                         </div>

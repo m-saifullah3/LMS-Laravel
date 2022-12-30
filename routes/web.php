@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\LogoutController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ClassShiftController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 // use App\Models\Role;
@@ -57,6 +58,14 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::post('add/batch', 'store');
         Route::get('edit/{batch}/batch', 'edit')->name('batch.edit');
         Route::post('edit/{batch}/batch', 'update');
+    });
+
+    Route::controller(TeacherController::class)->group(function () {
+        Route::get('teachers', 'index')->name('teachers');
+        Route::get('add/teacher', 'create')->name('teacher.create');
+        Route::post('add/teacher', 'store');
+        Route::get('edit/{teacher}/teacher', 'edit')->name('teacher.edit');
+        Route::post('edit/{teacher}/teacher', 'update');
     });
 
 });

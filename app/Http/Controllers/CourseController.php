@@ -52,7 +52,7 @@ class CourseController extends Controller
         if ($is_course_created) {
             return back()->with('success', 'Course has been successfully created');
         } else {
-            return back()->with('success', 'Course has failed to create');
+            return back()->with('error', 'Course has failed to create');
         }
     }
 
@@ -110,7 +110,7 @@ class CourseController extends Controller
         if ($is_course_upated) {
             return back()->with('success', 'Course has been successfully updated');
         } else {
-            return back()->with('success', 'Course has failed to update');
+            return back()->with('error', 'Course has failed to update');
         }
     }
 
