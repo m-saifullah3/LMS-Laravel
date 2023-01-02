@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Admin | Teachers')
+@section('title', 'Admin | Students')
 
 @section('contents')
     <main>
@@ -9,53 +9,43 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="">Teachers</h3>
+                            <h3 class="">Students</h3>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{ route('admin.teacher.create') }}" class="btn btn-outline-primary">Add Teacher</a>
+                            <a href="{{ route('admin.student.create') }}" class="btn btn-outline-primary">Add Student</a>
                         </div>
                     </div>
 
                 </div>
                 <div class="card-body">
-                        @if (count($teachers) > 0)
-                            <table class="table table-bordered table-striped">
+                        @if (count($students) > 0)
+                            <table class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>Sr. No.</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Course</th>
-                                        <th>Shift</th>
+                                        <th>Qualification</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($teachers as $teacher)
+                                    @foreach ($students as $student)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $teacher->user->name }}</td>
-                                            <td>{{ $teacher->user->email }}</td>
-                                            <td>{{ $teacher->course->name }}</td>
-                                            <td>
-                                                @if (strtolower($teacher->shift) == 'morning')
-                                                    <span class="badge bg-success">MORNING</span>
-                                                @elseif (strtolower($teacher->shift) == 'afternoon')
-                                                    <span class="badge bg-warning">AFTER NOON</span>
-                                                @else
-                                                    <span class="badge bg-dark">EVENING</span>
-                                                @endif
-                                            </td>
+                                            <td>{{ $student->user->name }}</td>
+                                            <td>{{ $student->user->email }}</td>
+                                            <td>{{ $student->qualification }}</td>
                                             <td class="text-center ">
-                                                @if (strtolower($teacher->status) == '1')
+                                                @if (strtolower($student->status) == '1')
                                                     <span class="badge bg-success ">Active</span>
                                                 @else
                                                 <span class="badge bg-danger ">Inactive</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.teacher.profile', $teacher) }}"
+                                                <a href="{{ route('admin.student.profile', $student) }}"
                                                     class="btn btn-primary">Profile</a>
                                             </td>
                                         </tr>

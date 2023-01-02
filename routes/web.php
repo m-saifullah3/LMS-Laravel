@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\LogoutController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ClassShiftController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -64,8 +65,18 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('teachers', 'index')->name('teachers');
         Route::get('add/teacher', 'create')->name('teacher.create');
         Route::post('add/teacher', 'store');
+        Route::get('teacher/{teacher}/profile', 'show')->name('teacher.profile');
         Route::get('edit/{teacher}/teacher', 'edit')->name('teacher.edit');
         Route::post('edit/{teacher}/teacher', 'update');
+    });
+
+    Route::controller(StudentController::class)->group(function () {
+        Route::get('students', 'index')->name('students');
+        Route::get('add/student', 'create')->name('student.create');
+        Route::post('add/student', 'store');
+        Route::get('student/{student}/profile', 'show')->name('student.profile');
+        Route::get('edit/{student}/student', 'edit')->name('student.edit');
+        Route::post('edit/{student}/student', 'update');
     });
 
 });

@@ -1,18 +1,19 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Admin | Add Teachers')
+@section('title', 'Admin | Edit Students')
 
 @section('contents')
+    {{-- {{ dd($student) }} --}}
     <main>
         <div class="container-fluid px-4">
             <div class="card mt-4">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="">Add Teacher</h3>
+                            <h3 class="">Edit Student</h3>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{ route('admin.teachers') }}" class="btn btn-outline-primary">Back</a>
+                            <a href="{{ route('admin.students') }}" class="btn btn-outline-primary">Back</a>
                         </div>
                     </div>
 
@@ -21,14 +22,15 @@
 
                     @include('partials.alerts')
 
-                    <form action="{{ route('admin.teacher.create') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.student.edit', $student) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="name">Name</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        id="name" name="name" value="{{ old('name') }}"
+                                        id="name" name="name"
+                                        value="{{ old('name') ? old('name') : $student->user->name }}"
                                         placeholder="Enter the name">
 
                                     @error('name')
@@ -38,7 +40,8 @@
                                 <div class="col-md-6">
                                     <label for="email">Email</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        id="email" name="email" value="{{ old('email') }}"
+                                        id="email" name="email"
+                                        value="{{ old('email') ? old('email') : $student->user->email }}"
                                         placeholder="Enter the email">
 
                                     @error('email')
@@ -54,7 +57,8 @@
                                 <div class="col-md-6">
                                     <label for="phone">Phone Number</label>
                                     <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                        id="phone" name="phone" value="{{ old('phone') }}"
+                                        id="phone" name="phone"
+                                        value="{{ old('phone') ? old('phone') : $student->user->phone_no }}"
                                         placeholder="Enter the phone">
 
                                     @error('phone')
@@ -64,7 +68,8 @@
                                 <div class="col-md-6">
                                     <label for="cnic">CNIC</label>
                                     <input type="text" class="form-control @error('cnic') is-invalid @enderror"
-                                        id="cnic" name="cnic" value="{{ old('cnic') }}"
+                                        id="cnic" name="cnic"
+                                        value="{{ old('cnic') ? old('cnic') : $student->user->cnic }}"
                                         placeholder="Enter the cnic">
 
                                     @error('cnic')
@@ -80,7 +85,8 @@
                                 <div class="col-md-6">
                                     <label for="dob">DoB</label>
                                     <input type="date" class="form-control @error('dob') is-invalid @enderror"
-                                        id="dob" name="dob" value="{{ old('dob') }}">
+                                        id="dob" name="dob"
+                                        value="{{ old('dob') ? old('dob') : $student->user->dob }}">
 
                                     @error('dob')
                                         <p class="text-danger">{{ $message }}</p>
@@ -89,7 +95,9 @@
                                 <div class="col-md-6">
                                     <label for="qualification">Qualification</label>
                                     <input type="text" class="form-control @error('qualification') is-invalid @enderror"
-                                        id="qualification" name="qualification" value="{{ old('qualification') }}" placeholder="Please enter your qualification">
+                                        id="qualification" name="qualification"
+                                        value="{{ old('qualification') ? old('qualification') : $student->qualification }}"
+                                        placeholder="Please enter your qualification">
 
                                     @error('qualification')
                                         <p class="text-danger">{{ $message }}</p>
@@ -99,6 +107,32 @@
                         </div>
 
                         <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="basic_computer_knowledge">Basic Computer Knowledge</label>
+                                    <input type="test" maxlength="3"
+                                        class="form-control @error('basic_computer_knowledge') is-invalid @enderror" id="basic_computer_knowledge"
+                                        name="basic_computer_knowledge" value="{{ old('basic_computer_knowledge') ? old('basic_computer_knowledge') : $basic_computer_knowledge }}" placeholder="Yes/No">
+
+                                    @error('basic_comp')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="occupation">Occupation</label>
+                                    <input type="text" class="form-control @error('occupation') is-invalid @enderror"
+                                        id="occupation" name="occupation"
+                                        value="{{ old('occupation') ? old('occupation') : $student->occupation }}"
+                                        placeholder="Please enter your occupation">
+
+                                    @error('occupation')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- <div class="mb-3">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="course">Course</label>
@@ -135,19 +169,24 @@
                                 </div>
                             </div>
 
-                        </div>
+                        </div> --}}
 
                         <div class="mb-3">
                             <label>Gender</label>
                             <br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="gender" id="male" value="Male"
-                                    checked>
+                                    @if (strtolower(old('gender')) == 'male') checked
+                                @elseif ($student->user->gender == 'Male')
+                                checked @endif>
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="gender" id="female"
-                                    value="Female">
+                                    value="Female"
+                                    @if (strtolower(old('gender')) == 'female') checked
+                                    @elseif ($student->user->gender == 'Female')
+                                    checked @endif>
                                 <label class="form-check-label" for="female">Female</label>
                             </div>
 
@@ -170,7 +209,16 @@
                         <div class="mb-3">
                             <label for="address">Address</label>
                             <textarea name="address" class="form-control" id="address" cols="30" rows="3"
-                                placeholder="Enter the address">{{ old('address') }}</textarea>
+                                placeholder="Enter the address">{{ old('address') ? old('address') : $student->user->address }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name">Status</label>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" name="status" id="status" @if ($student->status == 1) checked @endif>
+                                <label class="form-check-label" for="status">Mark to active</label>
+                            </div>
                         </div>
 
                         <div>

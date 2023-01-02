@@ -25,6 +25,11 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Teachers
             </a>
+
+            <a class="nav-link" href="{{ route('admin.students') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Students
+            </a>
         </div>
     </div>
     <div class="sb-sidenav-footer">
