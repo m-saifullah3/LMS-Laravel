@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\LogoutController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ClassShiftController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Middleware\Authenticate;
@@ -77,6 +78,14 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('student/{student}/profile', 'show')->name('student.profile');
         Route::get('edit/{student}/student', 'edit')->name('student.edit');
         Route::post('edit/{student}/student', 'update');
+    });
+
+    Route::controller(EnrollmentController::class)->group(function () {
+        Route::get('add/{student}/enrollment', 'create')->name('enrollment.create');
+        Route::post('add/{student}/enrollment', 'store');
+        Route::get('edit/{enrollment}/enrollment', 'edit')->name('enrollment.edit');
+        Route::post('edit/{enrollment}/enrollment', 'update');
+        Route::get('destroy/{enrollment}/enrollment', 'destroy')->name('enrollment.destroy');
     });
 
 });

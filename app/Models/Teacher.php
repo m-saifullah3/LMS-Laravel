@@ -27,4 +27,7 @@ class Teacher extends Model
     public function course() {
         return $this->belongsTo(Course::class);
     }
+    public function batches() {
+        return $this->hasMany(Batch::class);
+    }
 }

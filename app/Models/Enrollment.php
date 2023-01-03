@@ -24,4 +24,6 @@ class Enrollment extends Model
         return $this->belongsTo(Batch::class);
     }
 
+    
+
 }

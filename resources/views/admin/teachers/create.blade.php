@@ -86,15 +86,6 @@
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="qualification">Qualification</label>
-                                    <input type="text" class="form-control @error('qualification') is-invalid @enderror"
-                                        id="qualification" name="qualification" value="{{ old('qualification') }}" placeholder="Please enter your qualification">
-
-                                    @error('qualification')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
 
@@ -156,7 +147,6 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <div class="row">
                                 <label for="picture">Profile Picture</label>
                                 <input type="file" class="form-control @error('picture') is-invalid @enderror"
                                     id="picture" name="picture">
@@ -164,7 +154,6 @@
                                 @error('picture')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
-                            </div>
                         </div>
 
                         <div class="mb-3">

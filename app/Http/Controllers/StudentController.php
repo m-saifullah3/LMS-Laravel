@@ -56,7 +56,7 @@ class StudentController extends Controller
             'course' => ['required'],
             'batch' => ['required'],
             'qualification' => ['required'],
-            'basic_comp' => ['required'],
+            'basic_computer_knowledge' => ['required'],
             'occupation' => ['required'],
         ]);
 
@@ -81,16 +81,24 @@ class StudentController extends Controller
             'gender' => $request->gender,
             'dob' => $request->dob,
             'address' => $request->address,
+            'profile_picture' => 'default.png',
             'user_type' => 'Student',
         ];
 
         $is_user_created = User::create($data);
 
         if ($is_user_created) {
+
+            if ($request->basic_computer_knowledge) {
+                $basic_computer_knowledge = 1;
+            } else {
+                $basic_computer_knowledge = 0;
+            }
+
             $data = [
                 'user_id' => $is_user_created->id,
                 'qualification' => $request->qualification,
-                'basic_computer_knowledge' => $request->basic_comp,
+                'basic_computer_knowledge' => $basic_computer_knowledge,
                 'occupation' => $request->occupation,
             ];
 
@@ -98,8 +106,15 @@ class StudentController extends Controller
 
             if ($is_student_created) {
                 $course = Course::find($request->course);
-                
-                $reg = "ACI-" . Str::slug($course->name) . "-" . $is_student_created->id;
+
+                $words = explode(" ", $course->name);
+                $acronym = "";
+
+                foreach ($words as $w) {
+                    $acronym .= $w[0];
+                }
+
+                $reg = "ACI-" . $acronym . "-" . $is_student_created->id;
                 $data = [
                     'student_id' => $is_student_created->id,
                     'batch_id' => $request->batch,
@@ -113,13 +128,12 @@ class StudentController extends Controller
                 } else {
                     return back()->with('error', 'Enrollement has failed to create');
                 }
-            }  else {
+            } else {
                 return back()->with('error', 'Student has failed to create');
             }
         } else {
             return back()->with('error', 'User has failed to create');
         }
-        
     }
 
     /**
@@ -144,7 +158,12 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $data = [
+            'courses' => Course::all(),
+            'student' => $student,
+            'batches' => Batch::with('class_shift')->get(),
+        ];
+        return view('admin.students.edit', $data);
     }
 
     /**
@@ -156,7 +175,45 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'unique:users,email,' . $student->user_id . ',id'],
+            'gender' => ['required'],
+            'qualification' => ['required'],
+            'basic_computer_knowledge' => ['required'],
+            'occupation' => ['required'],
+        ]);
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_no' => $request->phone,
+            'cnic' => $request->cnic,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'address' => $request->address,
+        ];
+        $is_user_upated = User::find($student->user_id)->update($data);
+
+        if ($is_user_upated) {
+
+            if ($request->basic_computer_knowledge) {
+                $basic_computer_knowledge = 1;
+            } else {
+                $basic_computer_knowledge = 0;
+            }
+            $data = [
+                'qualification' => $request->qualification,
+                'basic_computer_knowledge' => $basic_computer_knowledge,
+                'occupation' => $request->occupation,
+
+            ];
+            $is_student_updated  = Student::find($student->id)->update($data);
+            if ($is_student_updated) {
+                return back()->with('success', 'Student has been successfully updated');
+            } else {
+                return back()->with('error', 'Student has failed to update');
+            }
+        }
     }
 
     /**

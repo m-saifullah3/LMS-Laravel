@@ -109,14 +109,17 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="basic_computer_knowledge">Basic Computer Knowledge</label>
-                                    <input type="test" maxlength="3"
-                                        class="form-control @error('basic_computer_knowledge') is-invalid @enderror" id="basic_computer_knowledge"
-                                        name="basic_computer_knowledge" value="{{ old('basic_computer_knowledge') ? old('basic_computer_knowledge') : $basic_computer_knowledge }}" placeholder="Yes/No">
+                                    <label for="name">Basic Computer Knowledge (Yes/No)</label>
 
-                                    @error('basic_comp')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    name="basic_computer_knowledge" id="basic_computer_knowledge" @if ($student->basic_computer_knowledge == 1) checked @endif>
+                                                <label class="form-check-label" for="basic_computer_knowledge">Mark to Yes</label>
+                                            </div>
+
+                                            @error('basic_computer_knowledge')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label for="occupation">Occupation</label>
@@ -131,45 +134,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        {{-- <div class="mb-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="course">Course</label>
-                                    <select name="course" id="course"
-                                        class="form-select @error('course') is-invalid @enderror">
-                                        <option value="" selected hidden disabled>Select a course</option>
-                                        @foreach ($courses as $course)
-                                            <option value="{{ $course->id }}"
-                                                {{ old('course') == $course->id ? 'selected' : '' }}>
-                                                {{ $course->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('course')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="shift">Shift</label>
-                                    <select name="shift" id="shift"
-                                        class="form-select @error('shift') is-invalid @enderror">
-                                        <option value="" selected hidden disabled>Select a shift</option>
-                                        @foreach ($shifts as $shift)
-                                            <option value="{{ $shift }}"
-                                                {{ old('shift') == $shift ? 'selected' : '' }}>{{ $shift }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('shift')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                        </div> --}}
 
                         <div class="mb-3">
                             <label>Gender</label>
@@ -194,31 +158,11 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <div class="row">
-                                <label for="picture">Profile Picture</label>
-                                <input type="file" class="form-control @error('picture') is-invalid @enderror"
-                                    id="picture" name="picture">
-
-                                @error('picture')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
 
                         <div class="mb-3">
                             <label for="address">Address</label>
                             <textarea name="address" class="form-control" id="address" cols="30" rows="3"
                                 placeholder="Enter the address">{{ old('address') ? old('address') : $student->user->address }}</textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="name">Status</label>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" name="status" id="status" @if ($student->status == 1) checked @endif>
-                                <label class="form-check-label" for="status">Mark to active</label>
-                            </div>
                         </div>
 
                         <div>

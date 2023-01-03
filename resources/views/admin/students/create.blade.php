@@ -21,7 +21,7 @@
 
                     @include('partials.alerts')
 
-                    <form action="{{ route('admin.student.create') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.student.create') }}" method="POST">
                         @csrf
 
                         <div class="row">
@@ -82,7 +82,7 @@
 
                                 <div class="mb-3">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <label for="dob">DoB</label>
                                             <input type="date" class="form-control @error('dob') is-invalid @enderror"
                                                 id="dob" name="dob" value="{{ old('dob') }}">
@@ -91,15 +91,8 @@
                                                 <p class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="picture">Profile Picture</label>
-                                    <input type="file" class="form-control @error('picture') is-invalid @enderror"
-                                        id="picture" name="picture">
 
-                                    @error('picture')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -123,7 +116,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    
+
                                 </div>
 
                                 <div class="mb-3">
@@ -206,12 +199,15 @@
                                 <div class="mb-3">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="basic_comp">Basic Computer Knowledge</label>
-                                            <input type="test" maxlength="3"
-                                                class="form-control @error('basic_comp') is-invalid @enderror" id="basic_comp"
-                                                name="basic_comp" value="{{ old('basic_comp') }}" placeholder="Yes/No">
+                                            <label for="name">Basic Computer Knowledge (Yes/No)</label>
 
-                                            @error('basic_comp')
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    name="basic_computer_knowledge" id="basic_computer_knowledge">
+                                                <label class="form-check-label" for="basic_computer_knowledge">Mark to Yes</label>
+                                            </div>
+
+                                            @error('basic_computer_knowledge')
                                                 <p class="text-danger">{{ $message }}</p>
                                             @enderror
 

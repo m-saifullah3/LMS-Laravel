@@ -12,6 +12,7 @@ class Batch extends Model
     protected $fillable = [
         'course_id',
         'class_shift_id',
+        'teacher_id',
         'starting_date',
         'ending_date',
         'seats',
@@ -30,6 +31,10 @@ class Batch extends Model
 
     public function class_shift() {
         return $this->belongsTo(ClassShift::class);
+    }
+
+    public function teacher() {
+        return $this->belongsTo(Teacher::class);
     }
 
 }

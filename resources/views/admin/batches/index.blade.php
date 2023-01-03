@@ -24,6 +24,7 @@
                                     <tr>
                                         <th>Sr. No.</th>
                                         <th>Course</th>
+                                        <th>Teacher</th>
                                         <th>Shift</th>
                                         <th>Starting Date</th>
                                         <th>Ending Date</th>
@@ -36,7 +37,8 @@
                                     @foreach ($batches as $batch)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $batch->course->name }}</td>
+                                            <td>{{ $batch->course->name }}</td> 
+                                            <td>{{ $batch->teacher->user->name }}</td> 
                                             <td>{{ $batch->class_shift->shift }}</td>
                                             <td>{{ $batch->starting_date->format('d-M-Y') }}</td>
                                             <td>{{ $batch->ending_date->format('d-M-Y') }}</td>

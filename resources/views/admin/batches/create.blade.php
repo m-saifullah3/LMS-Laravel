@@ -28,11 +28,29 @@
                             <select name="course" id="course" class="form-select @error('course') is-invalid @enderror">
                                 <option value="" selected hidden disabled>Select a course</option>
                                 @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}" {{ old('course') == $course->id ? 'selected' : '' }}>{{ $course->name }}</option>
+                                    <option value="{{ $course->id }}"
+                                        {{ old('course') == $course->id ? 'selected' : '' }}>{{ $course->name }}</option>
                                 @endforeach
                             </select>
 
                             @error('course')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="teacher">Teacher</label>
+                            <select name="teacher" id="teacher"
+                                class="form-select @error('teacher') is-invalid @enderror">
+                                <option value="" selected hidden disabled>Select a teacher</option>
+                                @foreach ($teachers as $teacher)
+                                    <option value="{{ $teacher->id }}"
+                                        {{ old('teacher') == $teacher->id ? 'selected' : '' }}>
+                                        {{ $teacher->user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('teacher')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
@@ -42,7 +60,9 @@
                             <select name="shift" id="shift" class="form-select @error('shift') is-invalid @enderror">
                                 <option value="" selected hidden disabled>Select a shift</option>
                                 @foreach ($shifts as $shift)
-                                    <option value="{{ $shift->id }}" {{ old('shift') == $shift->id ? 'selected' : '' }}>{{ $shift->shift }}</option>
+                                    <option value="{{ $shift->id }}"
+                                        {{ old('shift') == $shift->id ? 'selected' : '' }}>{{ $shift->shift }}
+                                    </option>
                                 @endforeach
                             </select>
 
@@ -53,7 +73,8 @@
 
                         <div class="mb-3">
                             <label for="starting_date">Starting Date</label>
-                            <input type="date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" name="starting_date" value="{{ old('starting_date') }}">
+                            <input type="date" class="form-control @error('starting_date') is-invalid @enderror"
+                                id="starting_date" name="starting_date" value="{{ old('starting_date') }}">
 
                             @error('starting_date')
                                 <p class="text-danger">{{ $message }}</p>

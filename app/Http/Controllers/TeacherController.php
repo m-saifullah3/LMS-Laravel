@@ -56,7 +56,6 @@ class TeacherController extends Controller
             'picture' => ['mimes:png,jpg,jpeg'],
             'course' => ['required'],
             'shift' => ['required'],
-            'qualification' => ['required'],
         ]);
 
         if (!empty($request->phone)) {
@@ -76,7 +75,7 @@ class TeacherController extends Controller
         if ($file) {
             $file_name = 'aci-' . time() . '-' . $file->getClientOriginalName();
         } else {
-            $file_name = '';
+            $file_name = 'default.png';
         }
 
         $data = [
@@ -97,15 +96,13 @@ class TeacherController extends Controller
         if ($is_user_created) {
 
             if ($file) {
-                $is_file_uploaded = $file->move(public_path('teacher_uploads'), $file_name);
+                $file->move(public_path('teacher_uploads'), $file_name);
             }
 
             $data = [
                 'user_id' => $is_user_created->id,
                 'course_id' => $request->course,
-                'qualification' => $request->qualification,
                 'shift' => $request->shift,
-                'status' => '1',
             ];
 
             $is_teacher_created = Teacher::create($data);
@@ -173,13 +170,23 @@ class TeacherController extends Controller
     {
         $request->validate([
             'name' => ['required'],
-            'email' => ['required', 'unique:users,email,' . $teacher->user_id . ',id'],
-            'phone_no' => ['required', 'unique:users,phone_no,' . $teacher->user_id . ',id'],
-            'cnic' => ['required', 'unique:users,cnic,' . $teacher->user_id . ',id'],
+            'email' => ['required', 'unique:users,email,' . $teacher->user_id . ',id'], 
             'gender' => ['required'],
             'course' => ['required'],
             'shift' => ['required'],
         ]);
+
+        if (!empty($request->phone)) {
+            $request->validate([
+                'phone' => ['unique:users,phone_no']
+            ]);
+        }
+
+        if (!empty($request->cnic)) {
+            $request->validate([
+                'cnic' => ['unique:users,cnic']
+            ]);
+        }
 
         $file = $request['picture'];
 
@@ -207,18 +214,11 @@ class TeacherController extends Controller
         ];
 
         $is_user_updated = User::find($teacher->user_id)->update($data);
-
-        if ($request->status) {
-            $status = 1;
-        } else {
-            $status = 0;
-        }
         if ($is_user_updated) {
             $data = [
                 'user_id' => $teacher->user_id,
                 'course_id' => $request->course,
-                'shift' => $request->shift,
-                'status' => $status,
+                'shift' => $request->shift
             ];
 
             $is_teacher_updated = Teacher::find($teacher->id)->update($data);

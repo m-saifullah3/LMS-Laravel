@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Batch;
 use App\Models\ClassShift;
 use App\Models\Course;
+use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,7 @@ class BatchController extends Controller
         $data = [
             'shifts' => ClassShift::all(),  
             'courses' => Course::all(),  
+            'teachers' => Teacher::all(),  
         ];
         return view('admin.batches.create', $data);
     }
@@ -46,6 +48,7 @@ class BatchController extends Controller
         $request->validate([
             'course' => ['required'],
             'shift' => ['required'],
+            'teacher' => ['required'],
             'starting_date' => ['required']
         ]);
 
@@ -61,6 +64,7 @@ class BatchController extends Controller
             'course_id' => $request->course,
             'class_shift_id' => $request->shift,
             'starting_date' => $request->starting_date,
+            'teacher_id' => $request->teacher,
             'ending_date' => $end_date,
             'seats' => 20,
         ];
@@ -95,6 +99,7 @@ class BatchController extends Controller
         $data = [
             'shifts' => ClassShift::all(),  
             'courses' => Course::all(),
+            'teachers' =>Teacher::all(),
             'batch' => $batch
         ];
         return view('admin.batches.edit', $data);

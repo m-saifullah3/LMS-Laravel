@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
+use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EnrollmentController extends Controller
 {
@@ -22,9 +26,15 @@ class EnrollmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student)
     {
-        //
+        $data = [
+            'student' => $student,
+            'courses' => Course::all(),
+            'batches' => Batch::all(),
+        ];
+
+        return view('admin.enrollments.create', $data);
     }
 
     /**
@@ -33,9 +43,58 @@ class EnrollmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Student $student)
     {
-        //
+        $request->validate([
+            'course' => ['required'],
+            'batch' => ['required'],
+        ]);
+
+        // $is_already_enrolled = DB::table('enrollments')->select('SELECT * FROM `enrollments` WHERE `student_id`=? AND (`course_id`= ? OR `batch_id`= ?)',[$student->id, $request->course, $request->batch]);
+
+        $enrollments = Enrollment::with('batch')->where('student_id', '=', $student->id)->get();
+
+        $is_already_enrolled = false;
+
+        $batch = Batch::with('course')->find($request->batch);
+
+        foreach($enrollments as $enrollment) {
+            if ($enrollment->batch->id == $request->batch || $enrollment->batch->course_id == $request->course || $batch->course_id == $enrollment->batch->course_id) {
+                $is_already_enrolled = true;
+            }
+        }
+
+        if ($is_already_enrolled) {
+            return back()->with('error', 'Student is already enrolled in this course');
+        } else {
+            return back()->with('success', 'Student is ready to get enrolled in this course');
+        }
+
+        $course = Course::find($request->course);
+
+        $words = explode(" ", $course->name);
+        $acronym = "";
+
+        foreach ($words as $w) {
+            $acronym .= $w[0];
+        }
+
+        $reg = "ACI-" . $acronym . "-" . $student->id;
+
+        $data = [
+            'student_id' => $student->id,
+            'course_id' => $request->course,
+            'batch_id' => $request->batch,
+            'reg_no' => $reg
+        ];
+
+        $is_enrollment_added = Enrollment::create($data);
+
+        if ($is_enrollment_added) {
+            return back()->with('success', 'Enrollment has been succesfully added');
+        } else {
+            return back()->with('error', 'Enrollment has failed to add');
+        }
     }
 
     /**
@@ -57,7 +116,12 @@ class EnrollmentController extends Controller
      */
     public function edit(Enrollment $enrollment)
     {
-        //
+        $data = [
+            'enrollment' => $enrollment,
+            'courses' => Course::all(),
+            'batches' => Batch::all(),
+        ];
+        return view('admin.enrollments.edit', $data);
     }
 
     /**
@@ -69,7 +133,23 @@ class EnrollmentController extends Controller
      */
     public function update(Request $request, Enrollment $enrollment)
     {
-        //
+        $request->validate([
+            'course' => ['required'],
+            'batch' => ['required'],
+        ]);
+
+        $data = [
+            'course_id' => $request->course,
+            'batch_id' => $request->batch,
+        ];
+
+        $is_enrollment_updated = Enrollment::find($enrollment->id)->update($data);
+
+        if ($is_enrollment_updated) {
+            return back()->with('success', 'Enrollment has been succesfully updated');
+        } else {
+            return back()->with('error', 'Enrollment has failed to update');
+        }
     }
 
     /**
@@ -80,6 +160,12 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        //
+        $is_enrollment_deleted = Enrollment::find($enrollment->id)->delete();
+
+        if ($is_enrollment_deleted) {
+            return back()->with('success', 'Enrollment has been succesfully deleted');
+        } else {
+            return back()->with('error', 'Enrollment has failed to delete');
+        }
     }
 }

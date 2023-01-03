@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_shift_id')->references('id')->on('class_shifts')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('teacher_id')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');
             $table->date('starting_date');
             $table->date('ending_date');
             $table->integer('seats');
