@@ -41,13 +41,13 @@
                             <label for="teacher">Teacher</label>
                             <select name="teacher" id="teacher"
                                 class="form-select @error('teacher') is-invalid @enderror">
-                                <option value="" selected hidden disabled>Select a teacher</option>
-                                @foreach ($teachers as $teacher)
+                                <option value="" selected hidden disabled>Select the course to get the teachers!</option>
+                                {{-- @foreach ($teachers as $teacher)
                                     <option value="{{ $teacher->id }}"
                                         {{ old('teacher') == $teacher->id ? 'selected' : '' }}>
                                         {{ $teacher->user->name }}
                                     </option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
 
                             @error('teacher')
@@ -90,4 +90,33 @@
             </div>
         </div>
     </main>
+
+    <script>
+        const courseElement = document.querySelector('#course');
+        const teacherElement = document.querySelector('#teacher');
+        
+        courseElement.addEventListener('change', function() {
+            const courseElementValue = courseElement.value;
+            const token = document.querySelector('input[name="_token"]').value;
+
+            const data = {
+                courseId: courseElementValue,
+                _token: token,
+            };
+
+            fetch('{{ route('admin.fetch.teachers') }}', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(result) {
+                teacherElement.innerHTML = result;
+            });
+        });
+    </script>
 @endsection

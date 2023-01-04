@@ -17,23 +17,34 @@ class Student extends Model
     ];
 
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function enrollments() {
+    public function enrollments()
+    {
         return $this->hasMany(Enrollment::class);
     }
 
-    public function is_already_enrolled($course_id, $student_id, $batch_id) {
-        $_SESSION['course_id'] = $course_id;
-        $_SESSION['batch_id'] = $batch_id;
-        $enrollments = $this->hasMany(Enrollment::class)->whereRelation('batch', function($query) {
-            $query->where([
-                'course_id' => $_SESSION['course_id'],
-                'id' => $_SESSION['batch_id'],
-            ]);
-        })->where('student_id', $student_id)->get();
-        return $enrollments;
+    public function is_already_enrolled($course_id, $student_id, $batch_id)
+    {
+
+        $batch = Batch::find($batch_id);
+        $enrollments = $this->enrollments()->whereRelation(
+            'batch',
+            fn ($query) => $query->where([
+                'course_id' => $course_id,
+            ])->orWhere([
+                'id' => $batch_id,
+            ])->orWhere([
+                'course_id' => $batch->course_id
+            ])
+        )->where('id', $student_id)->get();
+        if(count($enrollments) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\LogoutController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ClassShiftController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DynamicController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -86,6 +87,10 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('edit/{enrollment}/enrollment', 'edit')->name('enrollment.edit');
         Route::post('edit/{enrollment}/enrollment', 'update');
         Route::get('destroy/{enrollment}/enrollment', 'destroy')->name('enrollment.destroy');
+    });
+
+    Route::controller(DynamicController::class)->group(function () {
+        Route::post('fetch/teachers', 'fetch_teachers')->name('fetch.teachers');
     });
 
 });

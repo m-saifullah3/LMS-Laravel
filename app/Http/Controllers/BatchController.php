@@ -99,7 +99,6 @@ class BatchController extends Controller
         $data = [
             'shifts' => ClassShift::all(),  
             'courses' => Course::all(),
-            'teachers' =>Teacher::all(),
             'batch' => $batch
         ];
         return view('admin.batches.edit', $data);
