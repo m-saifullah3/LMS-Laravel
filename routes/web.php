@@ -91,6 +91,7 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
 
     Route::controller(DynamicController::class)->group(function () {
         Route::post('fetch/teachers', 'fetch_teachers')->name('fetch.teachers');
+        Route::post('fetch/batches', 'fetch_batches')->name('fetch.batches');
     });
 
 });

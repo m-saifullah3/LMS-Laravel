@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Batch;
-use App\Models\ClassShift;
 use App\Models\Course;
 use App\Models\Teacher;
-use Carbon\Carbon;
+use App\Models\ClassShift;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BatchController extends Controller
 {
@@ -30,9 +31,9 @@ class BatchController extends Controller
     public function create()
     {
         $data = [
-            'shifts' => ClassShift::all(),  
-            'courses' => Course::all(),  
-            'teachers' => Teacher::all(),  
+            'shifts' => ClassShift::all(),
+            'courses' => Course::all(),
+            'teachers' => Teacher::all(),
         ];
         return view('admin.batches.create', $data);
     }
@@ -49,8 +50,63 @@ class BatchController extends Controller
             'course' => ['required'],
             'shift' => ['required'],
             'teacher' => ['required'],
-            'starting_date' => ['required']
+            'starting_date' => ['required'],
+            // 'starting_date.already' => [
+            //     'required',
+            //     Rule::unique('batches')->where(
+            //         fn ($query) => $query
+            //             ->where('course_id', $request->course)
+            //             ->where('teacher_id', $request->teacher)
+            //             ->where('class_shift_id', $request->shift)
+            //             ->where('starting_date', $request->starting_date)
+            //     ),
+            // ]
         ]);
+
+        // $batch_1 = Batch::where('course_id', $request->course)
+        //     ->where('teacher_id', $request->teacher)
+        //     ->Where('class_shift_id', $request->shift)
+        //     // ->orWhere('starting_date', $request->starting_date)
+        //     ->get();
+
+        // $batch_2 = Batch::where('course_id', $request->course)
+        //     ->where('teacher_id', $request->teacher)
+        //     ->where('starting_date', $request->starting_date)
+        //     ->get();
+
+        $batch_1 = Batch::where([
+            ['course_id', $request->course],
+            ['teacher_id', $request->teacher],
+            ['class_shift_id', $request->shift],
+        ])->orWhere([
+            ['course_id', $request->course],
+            ['teacher_id', $request->teacher],
+            ['starting_date', $request->starting_date],
+        ])->get();
+
+        // $batch_2 = Batch::where('course_id', $request->course)
+        //     ->where('teacher_id', $request->teacher)
+        //     ->where('starting_date', $request->starting_date)
+        //     ->get();
+
+        dump($batch_1);
+        // dump($batch_2);
+
+        die();
+
+        // Course
+        // Teacher
+        // Shift
+
+        // (course AND teacher) AND shift 
+
+        // Course
+        // Teacher
+        // Start Date
+
+        // (course AND teacher) AND start date 
+
+        // Select * from batches WHERE (course=course AND teacher=tecaher AND shift=shift) OR (course=course AND teacher=tecaher AND start=start)
 
         $course = Course::find($request->course);
 
@@ -97,8 +153,9 @@ class BatchController extends Controller
     public function edit(Batch $batch)
     {
         $data = [
-            'shifts' => ClassShift::all(),  
+            'shifts' => ClassShift::all(),
             'courses' => Course::all(),
+            'teachers' => Teacher::all(),
             'batch' => $batch
         ];
         return view('admin.batches.edit', $data);
