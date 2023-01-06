@@ -41,13 +41,28 @@
 
                         <div class="mb-3">
                             <label for="teacher">Teacher</label>
-                            <select name="teacher" id="teacher" class="form-select @error('teacher') is-invalid @enderror">
-                                <option value="" selected hidden disabled>Select a teacher</option>
-                                @foreach ($teachers as $teacher)
-                                    <option value="{{ $teacher->id }}"
-                                        @if (old('teacher')) {{ old('teacher') == $teacher->id ? 'selected' : '' }} @else {{ $batch->teacher_id == $teacher->id ? 'selected' : '' }} @endif>
-                                        {{ $teacher->user->name }}</option>
-                                @endforeach
+                            <select name="teacher" id="teacher"
+                                class="form-select @error('teacher') is-invalid @enderror">
+
+                                @if (old('teacher') || old('course'))
+                                    <option value="" selected hidden disabled>Select the teacher</option>
+                                    @foreach ($teachers as $teacher)
+                                        @if ($teacher->course_id == old('course'))
+                                            <option value="{{ $teacher->id }}"
+                                                {{ old('teacher') == $teacher->id ? 'selected' : '' }}>
+                                                {{ $teacher->user->name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @foreach ($teachers as $teacher)
+                                        @if ($teacher->course_id == $batch->course_id)
+                                            <option value="{{ $teacher->id }}"
+                                                @if (old('teacher')) {{ old('teacher') == $teacher->id ? 'selected' : '' }} @else {{ $batch->teacher_id == $teacher->id ? 'selected' : '' }} @endif>
+                                                {{ $teacher->user->name }}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </select>
 
                             @error('teacher')
@@ -122,4 +137,33 @@
             </div>
         </div>
     </main>
+
+    <script>
+        const courseElement = document.querySelector('#course');
+        const teacherElement = document.querySelector('#teacher');
+
+        courseElement.addEventListener('change', function() {
+            const courseElementValue = courseElement.value;
+            const token = document.querySelector('input[name="_token"]').value;
+
+            const data = {
+                courseId: courseElementValue,
+                _token: token,
+            };
+
+            fetch('{{ route('admin.fetch.teachers') }}', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    teacherElement.innerHTML = result;
+                });
+        });
+    </script>
 @endsection

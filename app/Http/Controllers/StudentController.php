@@ -56,7 +56,6 @@ class StudentController extends Controller
             'course' => ['required'],
             'batch' => ['required'],
             'qualification' => ['required'],
-            'basic_computer_knowledge' => ['required'],
             'occupation' => ['required'],
         ]);
 
@@ -70,6 +69,15 @@ class StudentController extends Controller
             $request->validate([
                 'cnic' => ['unique:users,cnic']
             ]);
+        }
+
+        $seats = Batch::where([
+            ['seats', '>', 0],
+            ['id', $request->batch],
+        ])->get();
+
+        if (count($seats) == 0) {
+            return back()->with('error', 'No seats available');
         }
 
         $data = [
@@ -124,7 +132,22 @@ class StudentController extends Controller
                 $is_entrollment_created = Enrollment::create($data);
 
                 if ($is_entrollment_created) {
-                    return back()->with('success', 'Student has been successfully created');
+
+                    $batch = Batch::find($request->batch);
+                    $seats = $batch->seats;
+                    $seats--;
+
+                    $data = [
+                        'seats' => $seats
+                    ];
+
+                    $is_batch_updated = Batch::find($request->batch)->update($data);
+
+                    if ($is_batch_updated) {
+                        return back()->with('success', 'Student has been successfully created');
+                    } else {
+                        return back()->with('error', 'Batch has failed to update');
+                    }
                 } else {
                     return back()->with('error', 'Enrollement has failed to create');
                 }
@@ -180,7 +203,6 @@ class StudentController extends Controller
             'email' => ['required', 'unique:users,email,' . $student->user_id . ',id'],
             'gender' => ['required'],
             'qualification' => ['required'],
-            'basic_computer_knowledge' => ['required'],
             'occupation' => ['required'],
         ]);
         $data = [

@@ -31,6 +31,7 @@ class Student extends Model
     {
 
         $batch = Batch::find($batch_id);
+
         $enrollments = $this->enrollments()->whereRelation(
             'batch',
             fn ($query) => $query->where([
@@ -41,6 +42,8 @@ class Student extends Model
                 'course_id' => $batch->course_id
             ])
         )->where('id', $student_id)->get();
+
+        dd ($enrollments);
         if(count($enrollments) > 0) {
             return true;
         } else {

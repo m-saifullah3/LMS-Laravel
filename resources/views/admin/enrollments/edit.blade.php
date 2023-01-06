@@ -47,17 +47,29 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="batch">Batch</label>
+
                                     <select name="batch" id="batch"
                                         class="form-select @error('batch') is-invalid @enderror">
-                                        <option value="" selected hidden disabled>Select a batch</option>
-                                        @foreach ($batches as $batch)
-                                            <option value="{{ $batch->id }}"
-                                                @if (old('batch')) {{ old('batch') == $batch->id ? 'selected' : '' }}
-                                                @else
-                                                {{ $enrollment->batch->id == $batch->id ? 'selected' : '' }} @endif>
-                                                {{ $batch->course->name . ' (' . $batch->class_shift->shift . ')' }}
-                                            </option>
-                                        @endforeach
+                                        @if (old('batch') || old('course'))
+                                            <option value="" selected hidden disabled>Select the batch</option>
+                                            @foreach ($batches as $batch)
+                                                @if ($batch->course_id == old('course'))
+                                                    <option value="{{ $batch->id }}"
+                                                        {{ old('batch') == $batch->id ? 'selected' : '' }}>
+                                                        {{ $batch->course->name . ' (' . $batch->class_shift->shift . ')' }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            @foreach ($batches as $batch)
+                                                @if ($batch->id == $enrollment->batch_id)
+                                                    <option value="{{ $batch->id }}"
+                                                        {{ old('batch') == $batch->id ? 'selected' : '' }}>
+                                                        {{ $batch->course->name . ' (' . $batch->class_shift->shift . ')' }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </select>
 
                                     @error('batch')
@@ -77,4 +89,32 @@
             </div>
         </div>
     </main>
+    <script>
+        const courseElement = document.querySelector('#course');
+        const batchElement = document.querySelector('#batch');
+
+        courseElement.addEventListener('change', function() {
+            const courseElementValue = courseElement.value;
+            const token = document.querySelector('input[name="_token"]').value;
+
+            const data = {
+                courseId: courseElementValue,
+                _token: token,
+            };
+
+            fetch('{{ route('admin.fetch.batches') }}', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    batchElement.innerHTML = result;
+                });
+        });
+    </script>
 @endsection

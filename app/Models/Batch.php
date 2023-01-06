@@ -37,4 +37,39 @@ class Batch extends Model
         return $this->belongsTo(Teacher::class);
     }
 
+    public static function is_already_batch_created($course_id, $teacher_id, $shift_id, $starting_date, $batch_id = false) {
+        
+        if($batch_id == false) {
+
+            $batches = Batch::where([
+                ['course_id', $course_id],
+                ['teacher_id', $teacher_id],
+                ['class_shift_id', $shift_id],
+            ])->orWhere([
+                ['course_id', $course_id],
+                ['teacher_id', $teacher_id],
+                ['starting_date', $starting_date],
+            ])->get();
+
+        } else {
+
+            $batches = Batch::where([
+                ['course_id', $course_id],
+                ['teacher_id', $teacher_id],
+                ['class_shift_id', $shift_id],
+            ])->orWhere([
+                ['course_id', $course_id],
+                ['teacher_id', $teacher_id],
+                ['starting_date', $starting_date],
+            ])->where('id', '!=', $batch_id)->get();
+            
+        }
+
+        if (count($batches) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

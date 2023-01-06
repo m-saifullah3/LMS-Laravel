@@ -74,25 +74,19 @@ class BatchController extends Controller
         //     ->where('starting_date', $request->starting_date)
         //     ->get();
 
-        $batch_1 = Batch::where([
-            ['course_id', $request->course],
-            ['teacher_id', $request->teacher],
-            ['class_shift_id', $request->shift],
-        ])->orWhere([
-            ['course_id', $request->course],
-            ['teacher_id', $request->teacher],
-            ['starting_date', $request->starting_date],
-        ])->get();
+        $is_already_batch_created = Batch::is_already_batch_created($request->course, $request->teacher, $request->shift, $request->starting_date);
+
+        if ($is_already_batch_created) {
+            return back()->with('error', 'Batch is already created with this input data');
+        }
 
         // $batch_2 = Batch::where('course_id', $request->course)
         //     ->where('teacher_id', $request->teacher)
         //     ->where('starting_date', $request->starting_date)
         //     ->get();
 
-        dump($batch_1);
+        // dump($batch_1);
         // dump($batch_2);
-
-        die();
 
         // Course
         // Teacher
@@ -172,16 +166,20 @@ class BatchController extends Controller
     {
         $request->validate([
             'course' => ['required'],
+            'teacher' => ['required'],
             'shift' => ['required'],
             'starting_date' => ['required'],
             'ending_date' => ['required'],
+            'seats' => ['required'],
         ]);
 
-        if ($request->status) {
-            $status = 1;
-        } else {
-            $status = 0;
+        $is_already_batch_created = Batch::is_already_batch_created($request->course, $request->teacher, $request->shift, $request->starting_date, $batch->id);
+
+        if ($is_already_batch_created) {
+            return back()->with('error', 'Batch is already created with this input data');
         }
+
+        $request->status ? $status = 1 : $status = 0;
 
         $data = [
             'course_id' => $request->course,

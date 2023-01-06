@@ -19,8 +19,6 @@
                 </div>
                 <div class="card-body">
 
-                    
-
                     @include('partials.alerts')
 
                     <form action="{{ route('admin.batch.create') }}" method="POST">
