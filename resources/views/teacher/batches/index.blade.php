@@ -1,6 +1,6 @@
-@extends('layouts.admin.main')
+@extends('layouts.teacher.main')
 
-@section('title', 'Admin | Batches')
+@section('title', 'Teacher | Batches')
 
 @section('contents')
     <main>
@@ -10,9 +10,6 @@
                     <div class="row">
                         <div class="col-6">
                             <h3 class="">Batches</h3>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.batch.create') }}" class="btn btn-outline-primary">Add Batch</a>
                         </div>
                     </div>
 
@@ -24,7 +21,6 @@
                                 <tr>
                                     <th>Sr. No.</th>
                                     <th>Course</th>
-                                    <th>Teacher</th>
                                     <th>Shift</th>
                                     <th>Starting Date</th>
                                     <th>Ending Date</th>
@@ -38,7 +34,6 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $batch->course->name }}</td>
-                                        <td>{{ $batch->teacher->user->name }}</td>
                                         <td>{{ $batch->class_shift->shift }}</td>
                                         <td>{{ $batch->starting_date->format('d-M-Y') }}</td>
                                         <td>{{ $batch->ending_date->format('d-M-Y') }}</td>
@@ -62,8 +57,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.batch.edit', $batch) }}"
-                                                class="btn btn-primary">Edit</a>
+                                            <a href="#"
+                                                class="btn btn-primary">Students</a>
                                         </td>
                                     </tr>
                                 @endforeach

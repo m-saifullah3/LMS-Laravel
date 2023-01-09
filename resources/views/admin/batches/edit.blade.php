@@ -121,11 +121,18 @@
                         <div class="mb-3">
                             <label for="name">Status</label>
 
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" name="status" id="status"
-                                    @if ($batch->status == 1) checked @endif>
-                                <label class="form-check-label" for="status">Mark to active</label>
-                            </div>
+                            <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
+                                <option value="" selected hidden disabled>Select a status</option>
+                                @foreach ($statuses as $key => $value)
+                                    <option value="{{ $key }}"
+                                        @if (old('status')) {{ old('status') == $key ? 'selected' : '' }} @else {{ $batch->status == $key ? 'selected' : '' }} @endif>
+                                        {{ $value }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('status')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div>

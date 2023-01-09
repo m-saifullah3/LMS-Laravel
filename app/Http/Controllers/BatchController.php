@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Teacher;
 use App\Models\ClassShift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class BatchController extends Controller
@@ -46,6 +47,8 @@ class BatchController extends Controller
      */
     public function store(Request $request)
     {
+
+        // dd($request->all());
         $request->validate([
             'course' => ['required'],
             'shift' => ['required'],
@@ -146,10 +149,16 @@ class BatchController extends Controller
      */
     public function edit(Batch $batch)
     {
+        $statuses = [
+            'Open For Enrollment',
+            'Closed For Enrollment',
+            'Active For Classes',
+        ];
         $data = [
             'shifts' => ClassShift::all(),
             'courses' => Course::all(),
             'teachers' => Teacher::all(),
+            'statuses' => $statuses,
             'batch' => $batch
         ];
         return view('admin.batches.edit', $data);
@@ -179,18 +188,18 @@ class BatchController extends Controller
             return back()->with('error', 'Batch is already created with this input data');
         }
 
-        $request->status ? $status = 1 : $status = 0;
-
         $data = [
             'course_id' => $request->course,
+            'teacher_id' => $request->teacher,
             'class_shift_id' => $request->shift,
             'starting_date' => $request->starting_date,
             'ending_date' => $request->ending_date,
             'seats' => $request->seats,
-            'status' => $status,
+            'status' => $request->status,
         ];
 
         $is_batch_updated = Batch::find($batch->id)->update($data);
+
         if ($is_batch_updated) {
             return back()->with('success', 'Batch has been successfully updated');
         } else {
@@ -207,5 +216,14 @@ class BatchController extends Controller
     public function destroy(Batch $batch)
     {
         //
+    }
+
+    public function teacher_index()
+    {
+        $teacher = Auth::user()->teacher;
+        $data = [
+            'batches' =>Batch::with('course', 'class_shift')->where('teacher_id', $teacher->id)->get(),
+        ];
+        return view('teacher.batches.index', $data);
     }
 }

@@ -27,7 +27,6 @@
                                         <th>Email</th>
                                         <th>Course</th>
                                         <th>Shift</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -45,13 +44,6 @@
                                                     <span class="badge bg-warning">AFTER NOON</span>
                                                 @else
                                                     <span class="badge bg-dark">EVENING</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-center ">
-                                                @if (strtolower($teacher->status) == '1')
-                                                    <span class="badge bg-success ">Active</span>
-                                                @else
-                                                <span class="badge bg-danger ">Inactive</span>
                                                 @endif
                                             </td>
                                             <td>

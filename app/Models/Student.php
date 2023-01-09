@@ -27,24 +27,44 @@ class Student extends Model
         return $this->hasMany(Enrollment::class);
     }
 
-    public function is_already_enrolled($course_id, $student_id, $batch_id)
+    public function is_already_enrolled($course_id, $student_id, $batch_id, $enrollment_id = false)
     {
-
-        $batch = Batch::find($batch_id);
-
-        $enrollments = $this->enrollments()->whereRelation(
-            'batch',
-            fn ($query) => $query->where([
-                'course_id' => $course_id,
-            ])->orWhere([
-                'id' => $batch_id,
-            ])->orWhere([
-                'course_id' => $batch->course_id
+        if ($enrollment_id == false) {
+            $enrollments = Enrollment::where([
+                ['student_id', $student_id],
+                ['batch_id', $batch_id],
             ])
-        )->where('id', $student_id)->get();
+                ->whereHas(
+                    'batch',
+                    fn ($query) => $query->Where([
+                        'course_id' => $course_id,
+                    ])
+                )
+                ->get();
+        } else {
+            $enrollments = Enrollment::where([
+                ['student_id', $student_id],
+                ['batch_id', $batch_id],
+                ['id', '!=', $enrollment_id],
+            ])
+                ->whereHas(
+                    'batch',
+                    fn ($query) => $query->Where([
+                        'course_id' => $course_id,
+                    ])
+                )
+                ->get();
+        }
+        // $enrollments = $this->enrollments()->whereRelation(
+        //     'batch',
+        //     fn ($query) => $query->where([
+        //         'course_id' => $course_id,
+        //     ])->orWhere([
+        //         'id' => $batch_id,
+        //     ])
+        // )->where('id', $student_id)->get();
 
-        dd ($enrollments);
-        if(count($enrollments) > 0) {
+        if (count($enrollments) > 0) {
             return true;
         } else {
             return false;

@@ -57,11 +57,13 @@ class Batch extends Model
                 ['course_id', $course_id],
                 ['teacher_id', $teacher_id],
                 ['class_shift_id', $shift_id],
+                ['id', '!=', $batch_id],
             ])->orWhere([
                 ['course_id', $course_id],
                 ['teacher_id', $teacher_id],
                 ['starting_date', $starting_date],
-            ])->where('id', '!=', $batch_id)->get();
+                ['id', '!=', $batch_id],
+            ])->get();
             
         }
 

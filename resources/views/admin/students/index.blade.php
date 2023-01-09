@@ -26,7 +26,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Qualification</th>
-                                        <th>Status</th>
+                                        <th>Enrollments</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -37,13 +37,8 @@
                                             <td>{{ $student->user->name }}</td>
                                             <td>{{ $student->user->email }}</td>
                                             <td>{{ $student->qualification }}</td>
-                                            <td class="text-center ">
-                                                @if (strtolower($student->status) == '1')
-                                                    <span class="badge bg-success ">Active</span>
-                                                @else
-                                                <span class="badge bg-danger ">Inactive</span>
-                                                @endif
-                                            </td>
+                                            <td>{{ count($student->enrollments) }}</td>
+                                            
                                             <td>
                                                 <a href="{{ route('admin.student.profile', $student) }}"
                                                     class="btn btn-primary">Profile</a>

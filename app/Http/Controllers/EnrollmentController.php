@@ -50,23 +50,28 @@ class EnrollmentController extends Controller
             'batch' => ['required'],
         ]);
 
-        // $is_already_enrolled = $student->is_already_enrolled($request->course, $student->id, $request->batch);
+        // Store Calling
+        
+        $is_already_enrolled = $student->is_already_enrolled($request->course, $student->id, $request->batch);
 
-        $enrollments = Enrollment::with('batch')->where('student_id', '=', $student->id)->get();
+        // $enrollments = Enrollment::with('batch')->where('student_id', '=', $student->id)->get();
 
-        $is_already_enrolled = false;
+        // $is_already_enrolled = false;
 
-        $batch = Batch::with('course')->find($request->batch);
+        // $batch = Batch::with('course')->find($request->batch);
 
-        foreach($enrollments as $enrollment) {
-            if ($enrollment->batch->id == $request->batch || $enrollment->batch->course_id == $request->course || $batch->course_id == $enrollment->batch->course_id) {
-                $is_already_enrolled = true;
-            }
-        }
+        // foreach($enrollments as $enrollment) {
+        //     if ($enrollment->batch->id == $request->batch || $enrollment->batch->course_id == $request->course || $batch->course_id == $enrollment->batch->course_id) {
+        //         $is_already_enrolled = true;
+        //     }
+        // }
 
         if ($is_already_enrolled) {
             return back()->with('error', 'Student is already enrolled in this course');
-        }
+        } 
+        // else {
+        //     return back()->with('success', 'Student is ready to get enrolled'); 
+        // }
 
         $course = Course::find($request->course);
 
@@ -135,6 +140,16 @@ class EnrollmentController extends Controller
             'course' => ['required'],
             'batch' => ['required'],
         ]);
+
+        // Update Calling
+        $is_already_enrolled = $enrollment->student->is_already_enrolled($request->course, $enrollment->student_id, $request->batch, $enrollment->id);
+
+        if ($is_already_enrolled) {
+            return back()->with('error', 'Student is already enrolled in this course');
+        } 
+        // else {
+        //     return back()->with('success', 'Student is ready to get enrolled'); 
+        // }
 
         $data = [
             'course_id' => $request->course,

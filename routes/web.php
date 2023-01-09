@@ -10,6 +10,7 @@ use App\Http\Controllers\DynamicController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherDashboardController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 // use App\Models\Role;
@@ -96,10 +97,11 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
 
 });
 
+Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->group(function() {
+    Route::get('dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/teacher/dashboard', function () {
-    return "Teacher Dashboard";
-})->name('teacher.dashboard');
+    Route::get('batches', [BatchController::class, 'teacher_index'])->name('batches');
+});
 
 Route::get('/student/dashboard', function () {
     return "Student Dashboard";
