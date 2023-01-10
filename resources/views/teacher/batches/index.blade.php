@@ -26,7 +26,8 @@
                                     <th>Ending Date</th>
                                     <th>Seats</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Students</th>
+                                    <th>Attendance</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,8 +58,12 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#"
+                                            <a href="{{ route('teacher.batch.students', $batch) }}"
                                                 class="btn btn-primary">Students</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('teacher.students.attendance', $batch) }}"
+                                                class="btn btn-primary">Attendance</a>
                                         </td>
                                     </tr>
                                 @endforeach

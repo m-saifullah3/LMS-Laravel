@@ -217,13 +217,4 @@ class BatchController extends Controller
     {
         //
     }
-
-    public function teacher_index()
-    {
-        $teacher = Auth::user()->teacher;
-        $data = [
-            'batches' =>Batch::with('course', 'class_shift')->where('teacher_id', $teacher->id)->get(),
-        ];
-        return view('teacher.batches.index', $data);
-    }
 }

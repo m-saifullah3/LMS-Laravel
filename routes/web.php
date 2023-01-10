@@ -11,6 +11,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherDashboardController;
+use App\Http\Controllers\TeacherPanelController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 // use App\Models\Role;
@@ -100,7 +101,13 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
 Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->group(function() {
     Route::get('dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('batches', [BatchController::class, 'teacher_index'])->name('batches');
+    Route::controller(TeacherPanelController::class)->group(function () {
+        Route::get('batches', 'batches_index')->name('batches');
+        Route::get('batch/{batch}/students', 'batch_students_index')->name('batch.students');
+        Route::get('students/{batch}/attendance', 'students_attendance_create')->name('students.attendance');
+        Route::post('students/{batch}/attendance', 'students_attendance_store');
+    });
+    
 });
 
 Route::get('/student/dashboard', function () {

@@ -51,7 +51,7 @@ class EnrollmentController extends Controller
         ]);
 
         // Store Calling
-        
+
         $is_already_enrolled = $student->is_already_enrolled($request->course, $student->id, $request->batch);
 
         // $enrollments = Enrollment::with('batch')->where('student_id', '=', $student->id)->get();
@@ -68,35 +68,49 @@ class EnrollmentController extends Controller
 
         if ($is_already_enrolled) {
             return back()->with('error', 'Student is already enrolled in this course');
-        } 
+        }
         // else {
         //     return back()->with('success', 'Student is ready to get enrolled'); 
         // }
 
-        $course = Course::find($request->course);
+        $batch = Batch::where([
+            ['seats', '>', 0],
+            ['id', $request->batch],
+        ])->first();
+        
+        if ($batch) {
+            $course = Course::find($request->course);
 
-        $words = explode(" ", $course->name);
-        $acronym = "";
+            $words = explode(" ", $course->name);
+            $acronym = "";
 
-        foreach ($words as $w) {
-            $acronym .= $w[0];
-        }
+            foreach ($words as $w) {
+                $acronym .= $w[0];
+            }
 
-        $reg = "ACI-" . $acronym . "-" . $student->id;
+            $reg = "ACI-" . $acronym . "-" . $student->id;
 
-        $data = [
-            'student_id' => $student->id,
-            'course_id' => $request->course,
-            'batch_id' => $request->batch,
-            'reg_no' => $reg
-        ];
+            $data = [
+                'student_id' => $student->id,
+                'course_id' => $request->course,
+                'batch_id' => $request->batch,
+                'reg_no' => $reg
+            ];
 
-        $is_enrollment_added = Enrollment::create($data);
+            $is_enrollment_added = Enrollment::create($data);
 
-        if ($is_enrollment_added) {
-            return back()->with('success', 'Enrollment has been succesfully added');
+            if ($is_enrollment_added) {
+              $seats = $batch->seats;
+                $data = [
+                    'seats' => --$seats
+                ];
+                Batch::find($request->batch)->update($data);
+                return back()->with('success', 'Enrollment has been succesfully added');
+            } else {
+                return back()->with('error', 'Enrollment has failed to add');
+            }
         } else {
-            return back()->with('error', 'Enrollment has failed to add');
+            return back()->with('error', 'No seats are available for this batch');
         }
     }
 
@@ -146,7 +160,7 @@ class EnrollmentController extends Controller
 
         if ($is_already_enrolled) {
             return back()->with('error', 'Student is already enrolled in this course');
-        } 
+        }
         // else {
         //     return back()->with('success', 'Student is ready to get enrolled'); 
         // }

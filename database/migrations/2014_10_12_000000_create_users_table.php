@@ -26,6 +26,7 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->text('address')->nullable();
             $table->string('user_type');
+            $table->boolean('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
