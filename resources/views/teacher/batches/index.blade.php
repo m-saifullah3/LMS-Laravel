@@ -62,7 +62,7 @@
                                                 class="btn btn-primary">Students</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('teacher.students.attendance', $batch) }}"
+                                            <a href="{{ route('teacher.student.attendances.index', $batch) }}"
                                                 class="btn btn-primary">Attendance</a>
                                         </td>
                                     </tr>

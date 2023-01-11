@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'phone_no' => fake()->unique()->phoneNumber(),
             'cnic' => fake()->unique()->numberBetween(),
             'email_verified_at' => now(),
-            'password' =>  123456,
+            'password' =>  Hash::make('12345'),
             'profile_picture' =>  'default.png',
             'gender' =>  'Male',
             'dob' =>  fake()->date(),

@@ -104,7 +104,9 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
     Route::controller(TeacherPanelController::class)->group(function () {
         Route::get('batches', 'batches_index')->name('batches');
         Route::get('batch/{batch}/students', 'batch_students_index')->name('batch.students');
-        Route::get('students/{batch}/attendance', 'students_attendance_create')->name('students.attendance');
+        Route::get('student/{batch}/attendances', 'students_attendance_index')->name('student.attendances.index');
+
+        Route::get('students/{batch}/attendance', 'students_attendance_create')->name('students.attendance.create');
         Route::post('students/{batch}/attendance', 'students_attendance_store');
     });
     
