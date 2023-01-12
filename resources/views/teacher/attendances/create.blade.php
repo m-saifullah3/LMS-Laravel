@@ -22,6 +22,7 @@
                     @if (count($batch->enrollments) > 0)
                         <form action="{{ route('teacher.students.attendance.create', $batch) }}" method="post">
                             @csrf
+                            
                             <div class="mb-3">
                                 <label for="date">Date</label>
                                 <input type="date" name="date" id="date" class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}">
@@ -30,6 +31,7 @@
                                 @enderror
                                 
                             </div>
+
                             <table class="table table-bordered text-center">
                                 <thead>
                                     <tr>

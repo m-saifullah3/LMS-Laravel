@@ -26,8 +26,7 @@
                                     <th>Ending Date</th>
                                     <th>Seats</th>
                                     <th>Status</th>
-                                    <th>Students</th>
-                                    <th>Attendance</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,7 +50,7 @@
                                                 </div>
                                                 {{-- <span class="badge bg-danger">Closed for enrollment</span> --}}
                                             @elseif ($batch->status == 2)
-                                                <div class="m-0 alert alert-info" role="alert">
+                                                <div class="m-0 alert alert-info p-1" role="alert">
                                                     Active for class
                                                 </div>
                                                 {{-- <span class="badge bg-danger">Active for class</span> --}}
@@ -59,11 +58,13 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('teacher.batch.students', $batch) }}"
-                                                class="btn btn-primary">Students</a>
-                                        </td>
-                                        <td>
+                                                class="btn btn-primary btn-sm">Students</a>
+
                                             <a href="{{ route('teacher.student.attendances.index', $batch) }}"
-                                                class="btn btn-primary">Attendance</a>
+                                                class="btn btn-primary btn-sm">Attendance</a>
+
+                                            <a href="{{ route('teacher.student.remarks.index', $batch) }}"
+                                                class="btn btn-primary btn-sm">Remarks</a>
                                         </td>
                                     </tr>
                                 @endforeach

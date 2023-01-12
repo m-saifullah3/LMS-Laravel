@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\AttendanceDetails;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 
 class TeacherPanelController extends Controller
@@ -50,11 +51,6 @@ class TeacherPanelController extends Controller
     public function students_attendance_store(Request $request, Batch $batch)
     {
 
-        // $attendance = Attendance::where([
-        //     ['batch_id', $batch->id],
-        //     ['date', $request->date],
-        // ])->get();
-
         $request->validate([
             'date' => ['required', 
             Rule::unique('attendances')->where( fn($query) => $query->where([
@@ -97,8 +93,6 @@ class TeacherPanelController extends Controller
             return back()->with('error', 'Attendance has failed to add!');
         }
 
-
-
         // echo $request->student_1;
         // echo $request->student_2;
         // echo $request->student_3;
@@ -117,5 +111,46 @@ class TeacherPanelController extends Controller
 
         // }
         // dd($request->all());
+    }
+
+    public function students_remarks_index(Batch $batch)
+    {
+
+        $course = Course::find($batch->course_id);
+
+        $course_duration = explode(' ', $course->duration);
+        $course_duration = $course_duration[0];
+
+        $data = [
+            'batch' => $batch,
+            'duration' => $course_duration,
+        ];
+
+        return view('teacher.remarks.index', $data);
+    }
+
+    public function students_remarks_create(Batch $batch)
+    {
+        $batch = Batch::with('enrollments')->whereId($batch->id)->first();
+
+        $course = Course::find($batch->course_id);
+        $course_duration = explode(' ', $course->duration);
+        $course_duration = $course_duration[0];
+
+        $data = [
+            'batch' => $batch,
+            'duration' => $course_duration,
+        ];
+        return view('teacher.remarks.create', $data);
+    }
+
+    public function students_remarks_store(Request $request, Batch $batch)
+    {
+    
+        $request->validate([
+            'week' => ['required']
+        ]);
+
+        dd($request->all());
     }
 }

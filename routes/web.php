@@ -103,11 +103,22 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
 
     Route::controller(TeacherPanelController::class)->group(function () {
         Route::get('batches', 'batches_index')->name('batches');
-        Route::get('batch/{batch}/students', 'batch_students_index')->name('batch.students');
-        Route::get('student/{batch}/attendances', 'students_attendance_index')->name('student.attendances.index');
 
+        Route::get('batch/{batch}/students', 'batch_students_index')->name('batch.students');
+        
+        Route::get('student/{batch}/attendances', 'students_attendance_index')->name('student.attendances.index');
         Route::get('students/{batch}/attendance', 'students_attendance_create')->name('students.attendance.create');
         Route::post('students/{batch}/attendance', 'students_attendance_store');
+
+        Route::get('student/{batch}/remarks', 'students_remarks_index')->name('student.remarks.index');
+        Route::get('students/{batch}/remarks', 'students_remarks_create')->name('students.remarks.create');
+        Route::post('students/{batch}/remarks', 'students_remarks_store');
+    });
+
+    Route::controller(DynamicController::class)->group(function () {
+        Route::post('fetch/attendance', 'fetch_attendance')->name('fetch.attendance');
+
+        Route::post('fetch/remarks', 'fetch_remarks')->name('fetch.remarks');
     });
     
 });

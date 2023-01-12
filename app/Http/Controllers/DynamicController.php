@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Batch;
+use App\Models\Enrollment;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -40,6 +42,36 @@ class DynamicController extends Controller
             $output = '<option value="" selected hidden disabled>No batch found</option>';
         }
 
+        return json_encode($output);
+    }
+
+    public function fetch_attendance()
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $attendance = Attendance::with('attendance_details')->where([
+            ['batch_id', $data['batch_id']],
+            ['date', $data['date']],
+        ])->first();
+
+        if ($attendance) {
+            $output = '';
+            foreach ($attendance->attendance_details as $item) {
+                $enrollment = Enrollment::with('student')->where([
+                    ['batch_id', $data['batch_id']],
+                    ['student_id', $item->student_id],
+                ])->first();
+                $status = "";
+                if ($item->status == 1) {
+                    $status = 'Present';
+                }else{
+                    $status = 'Absent';
+                }
+                $output .= '<tr><td>' . $enrollment->reg_no .'</td><td>' . $enrollment->student->user->name . '</td><td>' . $status . '</td></tr>';
+            }
+        } else {
+            $output = 'NoAttendance';
+        }
         return json_encode($output);
     }
 }
