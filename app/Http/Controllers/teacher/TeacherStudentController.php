@@ -1,20 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\teacher;
 
-use App\Models\Attendance;
+use App\Http\Controllers\Controller;
+use App\Models\Batch;
 use Illuminate\Http\Request;
 
-class AttendanceController extends Controller
+class TeacherStudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Batch $batch)
     {
-        //
+        $batch = Batch::with('enrollments')->whereId($batch->id)->first();
+        $enrollments = $batch->enrollments;
+        $data = [
+            'enrollments' => $enrollments
+        ];
+        return view('teacher.students.index', $data);
     }
 
     /**
@@ -41,10 +47,10 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Attendance $attendance)
+    public function show($id)
     {
         //
     }
@@ -52,10 +58,10 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Attendance $attendance)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +70,10 @@ class AttendanceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Attendance  $attendance
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +81,10 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attendance $attendance)
+    public function destroy($id)
     {
         //
     }

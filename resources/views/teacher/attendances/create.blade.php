@@ -53,7 +53,7 @@
                                             </div>
 
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="{{ $enrollment->student_id }}"
+                                                <input class="form-check-input  "  type="radio" name="{{ $enrollment->student_id }}"
                                                     id="{{ $enrollment->student_id }}_absent" value="0">
                                                 <label class="form-check-label" for="{{ $enrollment->student_id }}_absent">Absent</label>
                                             </div>

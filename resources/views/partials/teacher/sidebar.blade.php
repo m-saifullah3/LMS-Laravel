@@ -8,12 +8,20 @@
 
             <a class="nav-link" href="{{ route('teacher.batches') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-chair"></i></div>
-                Batches
+                Batches   
             </a>
+            <a class="nav-link" href="# ">
+                <div class="sb-nav-link-icon"><i class="fas fa-arrow-right"></i></div>
+                Attendence
+            </a>
+            <a class="nav-link" href="#">
+                <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
+                Remarks
+            </a> 
         </div>
     </div>
-    <div class="sb-sidenav-footer">
-        <div class="small">Logged in as:</div>
-        {{ Auth::user()->name }}
+    <div class="sb-sidenav-footer ">
+           <div class="small">
+            {{ Auth::user()->name }}</div>
     </div>
 </nav>

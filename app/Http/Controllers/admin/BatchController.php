@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Carbon\Carbon;
 use App\Models\Batch;
@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Teacher;
 use App\Models\ClassShift;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -119,6 +120,7 @@ class BatchController extends Controller
             'starting_date' => $request->starting_date,
             'teacher_id' => $request->teacher,
             'ending_date' => $end_date,
+            'status' => 0,
             'seats' => 20,
         ];
 

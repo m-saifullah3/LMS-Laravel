@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\teacher;
 
 use App\Models\Attendance;
 use App\Models\Batch;
 use App\Models\Enrollment;
 use App\Models\Teacher;
+use App\Http\Controllers\Controller;
+use App\Models\Remarks;
 use Illuminate\Http\Request;
 
 class DynamicController extends Controller
@@ -63,9 +65,9 @@ class DynamicController extends Controller
                 ])->first();
                 $status = "";
                 if ($item->status == 1) {
-                    $status = 'Present';
+                    $status = '<span class="badge bg-success">Present</span>';
                 }else{
-                    $status = 'Absent';
+                    $status = '<span class="badge bg-danger">Absent</span>';
                 }
                 $output .= '<tr><td>' . $enrollment->reg_no .'</td><td>' . $enrollment->student->user->name . '</td><td>' . $status . '</td></tr>';
             }
@@ -74,4 +76,35 @@ class DynamicController extends Controller
         }
         return json_encode($output);
     }
+
+
+    public function fetch_remarks()
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $remarks = Remarks::where([
+            ['batch_id', $data['batch_id']],
+            ['week', $data['week']],
+        ])->get();
+
+        if (count($remarks) > 0) {
+            $output = '';
+            foreach ($remarks as $item) {
+                $enrollment = Enrollment::with('student')->where([
+                    ['batch_id', $data['batch_id']],
+                    ['student_id', $item->student_id],
+                ])->first();
+                $output .= '<tr><td>' . $enrollment->reg_no .'</td><td>' . $enrollment->student->user->name . '</td><td>' . $item->remarks . '</td></tr>';
+            }
+        } else {
+            $output = 'NoRemarks';
+        }
+        return json_encode($output);
+    }
 }
+
+
+ 
+                                                 
+                                             
+                                           

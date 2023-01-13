@@ -26,10 +26,11 @@
 
                             <div class="mb-3">
                                 <label for="week" class="col-sm-1 col-form-label">Week</label>
-                                <select name="week" id="week" class="form-select @error('week') is-invalid @enderror">
+                                <select name="week" id="week"
+                                    class="form-select @error('week') is-invalid @enderror">
                                     <option value="" selected hidden disabled>Select the week</option>
                                     @for ($i = 1; $i <= $duration; $i++)
-                                        <option value="{{ $i }}">Week {{ $i }}</option>
+                                        <option value="{{ $i }}" {{ old('week') == $i ? 'selected' : '' }}>Week {{ $i }}</option>
                                     @endfor
                                 </select>
                                 @error('week')
@@ -38,21 +39,30 @@
 
                             </div>
 
+                            {{-- {{ dump($errors) }} --}}
+
                             <table class="table table-bordered text-center">
                                 <thead>
                                     <tr>
                                         <th>Reg. No.</th>
                                         <th>Name</th>
-                                        <th>Attendance</th>
+                                        <th>Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{-- <div class="alert alert-danger text-center" role="alert">
+                                        Please fill out all the remarks fields
+                                      </div> --}}
                                     @foreach ($batch->enrollments as $enrollment)
                                         <tr>
                                             <td>{{ $enrollment->reg_no }}</td>
                                             <td>{{ $enrollment->student->user->name }}</td>
                                             <td>
-                                                <textarea name="{{ $enrollment->student_id }}" id="remarks" cols="30" rows="1" class="form-control"></textarea>
+                                                <textarea name="remarks_{{ $enrollment->student_id }}" id="remarks" cols="30" rows="1"
+                                                    class="form-control @error('remarks_' . $enrollment->student_id) is-invalid @enderror">{{ old('remarks_' . $enrollment->student_id) }}</textarea>
+                                                @error('remarks_' . $enrollment->student_id)
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
                                             </td>
                                         </tr>
                                     @endforeach

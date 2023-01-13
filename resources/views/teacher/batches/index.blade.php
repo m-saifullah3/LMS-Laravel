@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     @if (count($batches) > 0)
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>Sr. No.</th>
@@ -40,12 +40,12 @@
                                         <td>{{ $batch->seats }}</td>
                                         <td>
                                             @if ($batch->status == 0)
-                                                <div class="m-0 alert alert-primary" role="alert">
+                                                <div class="m-0 alert alert-primary p-1" role="alert">
                                                     Open for enrollment
                                                 </div>
                                                 {{-- <span class="badge bg-primary"></span> --}}
                                             @elseif ($batch->status == 1)
-                                                <div class="m-0 alert alert-danger" role="alert">
+                                                <div class="m-0 alert alert-danger  p-1" role="alert">
                                                     Closed for enrollment
                                                 </div>
                                                 {{-- <span class="badge bg-danger">Closed for enrollment</span> --}}

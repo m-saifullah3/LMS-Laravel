@@ -88,8 +88,9 @@
                             tableElement.classList.remove('d-none');
                             tbodyElement.innerHTML = result;
                         } else{
+                            let element = `<div class="alert alert-danger text-center" role="alert">No record Found</div>`;
                             tableElement.classList.add('d-none');
-                            error.innerHTML = result;
+                            error.innerHTML = element;
                         }
                     });
             }

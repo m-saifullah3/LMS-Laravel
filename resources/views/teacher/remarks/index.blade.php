@@ -29,7 +29,7 @@
                                 <select name="week" id="week" class="form-select">
                                     <option value="" selected hidden disabled>Select the week</option>
                                     @for ($i = 1; $i <= $duration; $i++)
-                                        <option value="">Week {{ $i }}</option>
+                                        <option value="{{ $i }}">Week {{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
@@ -59,20 +59,20 @@
     <script>
         const formElement = document.querySelector('#form');
         const tbodyElement = document.querySelector('#tbody');
-        const dateElement = document.querySelector('#date');
+        const weekElement = document.querySelector('#week');
         const tableElement = document.querySelector('#table-bhai');
 
         formElement.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const dateElementValue = dateElement.value;
+            const weekElementValue = weekElement.value;
             const token = document.querySelector('input[name="_token"]').value;
 
-            if (dateElementValue == "" || dateElementValue === undefined) {
-                alert("Please select the date");
+            if (weekElementValue == "" || weekElementValue === undefined) {
+                alert("Please select the week");
             } else {
                 const data = {
-                    date: dateElementValue,
+                    week: weekElementValue,
                     batch_id: {{ $batch->id }},
                     _token: token,
                 };
@@ -88,13 +88,14 @@
                         return response.json();
                     })
                     .then(function(result) {
-                        if (result != "NoAttendance") {
+                        if (result != "NoRemarks") {
                             error.innerHTML = '';
                             tableElement.classList.remove('d-none');
                             tbodyElement.innerHTML = result;
                         } else {
+                            let element = `<div class="alert alert-danger text-center" role="alert">No record Found</div>`;
                             tableElement.classList.add('d-none');
-                            error.innerHTML = result;
+                            error.innerHTML = element;
                         }
                     });
             }

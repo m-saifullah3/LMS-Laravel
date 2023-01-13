@@ -1,22 +1,25 @@
 <?php
 
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\LogoutController;
-use App\Http\Controllers\BatchController;
-use App\Http\Controllers\ClassShiftController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\DynamicController;
-use App\Http\Controllers\EnrollmentController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\TeacherDashboardController;
-use App\Http\Controllers\TeacherPanelController;
+use App\Http\Controllers\admin\BatchController;
+use App\Http\Controllers\admin\ClassShiftController;
+use App\Http\Controllers\admin\CourseController;
+use App\Http\Controllers\admin\EnrollmentController;
+use App\Http\Controllers\admin\StudentController;
+use App\Http\Controllers\admin\TeacherController;
+
+use App\Http\Controllers\teacher\TeacherAttendenceController;
+use App\Http\Controllers\teacher\TeacherBatchController;
+use App\Http\Controllers\teacher\TeacherDashboardController;
+use App\Http\Controllers\teacher\TeacherStudentController;
+use App\Http\Controllers\teacher\DynamicController;
+use App\Http\Controllers\teacher\TeacherRemarksController;
+
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
-// use App\Models\Role;
-// use App\Models\User;
-// use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +41,7 @@ Route::controller(LoginController::class)->middleware(RedirectIfAuthenticated::c
 
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function() {
+Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::controller(CourseController::class)->group(function () {
@@ -95,39 +98,43 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::post('fetch/teachers', 'fetch_teachers')->name('fetch.teachers');
         Route::post('fetch/batches', 'fetch_batches')->name('fetch.batches');
     });
-
 });
 
-Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->group(function() {
-    Route::get('dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
+Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->group(function () {
 
-    Route::controller(TeacherPanelController::class)->group(function () {
-        Route::get('batches', 'batches_index')->name('batches');
+    // Route::get('dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
 
-        Route::get('batch/{batch}/students', 'batch_students_index')->name('batch.students');
-        
-        Route::get('student/{batch}/attendances', 'students_attendance_index')->name('student.attendances.index');
-        Route::get('students/{batch}/attendance', 'students_attendance_create')->name('students.attendance.create');
-        Route::post('students/{batch}/attendance', 'students_attendance_store');
+    Route::controller(TeacherDashboardController::class)->group(function () { 
+        Route::get('dashboard', 'index')->name('dashboard');
+        Route::get('/profile', 'show')->name('profile');
 
-        Route::get('student/{batch}/remarks', 'students_remarks_index')->name('student.remarks.index');
-        Route::get('students/{batch}/remarks', 'students_remarks_create')->name('students.remarks.create');
-        Route::post('students/{batch}/remarks', 'students_remarks_store');
+        // Route::get('students/{batch}/attendance', 'create')->name('students.attendance.create');
+        // Route::post('students/{batch}/attendance', 'store');
+    });
+
+    Route::get('batches',[TeacherBatchController::class,'index'] )->name('batches');
+    
+    Route::get('batch/{batch}/students',[TeacherStudentController::class,'index'] )->name('batch.students');
+
+    Route::controller(TeacherAttendenceController::class)->group(function () { 
+        Route::get('student/{batch}/attendances', 'index')->name('student.attendances.index');
+        Route::get('students/{batch}/attendance', 'create')->name('students.attendance.create');
+        Route::post('students/{batch}/attendance', 'store');
+    });
+
+    Route::controller(TeacherRemarksController::class)->group(function () {   
+        Route::get('student/{batch}/remarks', 'index')->name('student.remarks.index');
+        Route::get('students/{batch}/remarks', 'create')->name('students.remarks.create');
+        Route::post('students/{batch}/remarks', 'store');
     });
 
     Route::controller(DynamicController::class)->group(function () {
         Route::post('fetch/attendance', 'fetch_attendance')->name('fetch.attendance');
-
         Route::post('fetch/remarks', 'fetch_remarks')->name('fetch.remarks');
     });
-    
 });
 
 Route::get('/student/dashboard', function () {
     return "Student Dashboard";
 })->name('student.dashboard');
-
-// Route::get('/create', function() {
-//     return Hash::make('12345');
-// });
-
+ 
