@@ -10,14 +10,6 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-chair"></i></div>
                 Batches   
             </a>
-            <a class="nav-link" href="# ">
-                <div class="sb-nav-link-icon"><i class="fas fa-arrow-right"></i></div>
-                Attendence
-            </a>
-            <a class="nav-link" href="#">
-                <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
-                Remarks
-            </a> 
         </div>
     </div>
     <div class="sb-sidenav-footer ">

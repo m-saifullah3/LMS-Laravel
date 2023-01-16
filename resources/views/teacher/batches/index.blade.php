@@ -65,6 +65,9 @@
 
                                             <a href="{{ route('teacher.student.remarks.index', $batch) }}"
                                                 class="btn btn-primary btn-sm">Remarks</a>
+
+                                                <a href="{{ route('teacher.student.classes.index', $batch) }}"
+                                                class="btn btn-primary btn-sm">Classes</a>
                                         </td>
                                     </tr>
                                 @endforeach

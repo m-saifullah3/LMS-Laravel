@@ -1,26 +1,26 @@
 <?php
 
-use App\Http\Controllers\admin\AdminDashboardController;
-use App\Http\Controllers\auth\LoginController;
-use App\Http\Controllers\auth\LogoutController;
-use App\Http\Controllers\admin\BatchController;
-use App\Http\Controllers\admin\ClassShiftController;
-use App\Http\Controllers\admin\CourseController;
-use App\Http\Controllers\admin\EnrollmentController;
-use App\Http\Controllers\admin\StudentController;
-use App\Http\Controllers\admin\TeacherController;
-
-use App\Http\Controllers\teacher\TeacherAttendenceController;
-use App\Http\Controllers\teacher\TeacherBatchController;
-use App\Http\Controllers\teacher\TeacherDashboardController;
-use App\Http\Controllers\teacher\TeacherStudentController;
-use App\Http\Controllers\teacher\DynamicController;
-use App\Http\Controllers\teacher\TeacherRemarksController;
-
 use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\RedirectIfAuthenticated;
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\admin\BatchController;
+use App\Http\Controllers\auth\LogoutController;
+use App\Http\Controllers\admin\CourseController;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Controllers\admin\StudentController;
+
+use App\Http\Controllers\admin\TeacherController;
+use App\Http\Controllers\teacher\DynamicController;
+use App\Http\Controllers\admin\ClassShiftController;
+use App\Http\Controllers\admin\EnrollmentController;
+use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\teacher\TeacherBatchController;
+use App\Http\Controllers\teacher\TeacherRemarksController;
+use App\Http\Controllers\teacher\TeacherStudentController;
+use App\Http\Controllers\teacher\TeacherClassController;
+
+use App\Http\Controllers\teacher\TeacherDashboardController;
+use App\Http\Controllers\teacher\TeacherAttendenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,6 +126,12 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
         Route::get('student/{batch}/remarks', 'index')->name('student.remarks.index');
         Route::get('students/{batch}/remarks', 'create')->name('students.remarks.create');
         Route::post('students/{batch}/remarks', 'store');
+    });
+
+    Route::controller(TeacherClassController::class)->group(function () {   
+        Route::get('student/{batch}/classes', 'index')->name('student.classes.index');
+        Route::get('students/{batch}/class', 'create')->name('students.class.create');
+        Route::post('students/{batch}/class', 'store');
     });
 
     Route::controller(DynamicController::class)->group(function () {

@@ -1,6 +1,6 @@
 @extends('layouts.teacher.main')
 
-@section('title', 'Teacher | Remarks')
+@section('title', 'Teacher | Classes')
 
 @section('contents')
     <main>
@@ -9,49 +9,47 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="">Remarks</h3>
+                            <h3 class="">Classes</h3>
                         </div>
                         <div class="col-6 text-end">
                             <a href="{{ route('teacher.batches') }}" class="btn btn-outline-primary">Towards Batches</a>
-                            <a href="{{ route('teacher.students.remarks.create', $batch) }}"
-                                class="btn btn-outline-primary">Create Remarks</a>
+                            <a href="{{ route('teacher.students.class.create', $batch) }}"
+                                class="btn btn-outline-primary">Create Class</a>
                         </div>
                     </div>
 
                 </div>
                 <div class="card-body">
                     @include('partials.alerts')
-                    <form action="" method="post" id="form">
-                        @csrf
-                        <div class="mb-3 row">
-                            <label for="week" class="col-sm-1 col-form-label">Week</label>
-                            <div class="col-sm-4">
-                                <select name="week" id="week" class="form-select">
-                                    <option value="" selected hidden disabled>Select the week</option>
-                                    @for ($i = 1; $i <= $duration; $i++)
-                                        <option value="{{ $i }}">Week {{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="submit" class="btn btn-primary" id="submit" value="Submit">
-                            </div>
-                        </div>
-                    </form>
-                    <p class="text-danger text-center" id="error"></p>
 
-                    <table class="table table-bordered text-center d-none" id="table-bhai">
+                    @if (count($batch->classes) > 0)
+                    <table class="table table-bordered text-center  " id="table-bhai">
                         <thead>
                             <tr>
-                                <th>Reg. No.</th>
-                                <th>Name</th>
-                                <th>Remarks</th>
+                                <th>Class No.</th>
+                                <th>Topic</th>
+                                <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="tbody">
-
+                        <tbody>
+                            
+                            @foreach ($batch->classes as $class)
+                                <tr>
+                                    <td>{{ $class->class_no }}</td>
+                                    <td>{{ $class->topic }}</td>
+                                    <td>{{ $class->date }}</td>
+                                    <td>Action </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                    @else
+                        <div class="alert alert-danger">
+                            No Record Found!
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div>

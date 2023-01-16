@@ -41,6 +41,10 @@ class Batch extends Model
         return $this->hasMany(Enrollment::class);
     }
 
+    public function classes() {
+        return $this->hasMany(TeacherClass::class);
+    }
+
     public static function is_already_batch_created($course_id, $teacher_id, $shift_id, $starting_date, $batch_id = false) {
         
         if($batch_id == false) {
