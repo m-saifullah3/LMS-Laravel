@@ -14,6 +14,9 @@ use App\Http\Controllers\teacher\DynamicController;
 use App\Http\Controllers\admin\ClassShiftController;
 use App\Http\Controllers\admin\EnrollmentController;
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\student\StudentBatchController;
+use App\Http\Controllers\student\StudentClassController;
+use App\Http\Controllers\student\StudentDashboardController;
 use App\Http\Controllers\teacher\TeacherBatchController;
 use App\Http\Controllers\teacher\TeacherRemarksController;
 use App\Http\Controllers\teacher\TeacherStudentController;
@@ -132,6 +135,8 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
         Route::get('student/{batch}/classes', 'index')->name('student.classes.index');
         Route::get('students/{batch}/class', 'create')->name('students.class.create');
         Route::post('students/{batch}/class', 'store');
+        Route::get('class/{teacherClass}/show', 'show')->name('students.class.show');
+
     });
 
     Route::controller(DynamicController::class)->group(function () {
@@ -140,7 +145,19 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
     });
 });
 
-Route::get('/student/dashboard', function () {
-    return "Student Dashboard";
-})->name('student.dashboard');
+
+
+Route::prefix('student')->name('student.')->middleware(Authenticate::class)->group(function () {
+    Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+    Route::controller(StudentBatchController::class)->group(function () {
+        Route::get('batch/{student}/enrollment', 'index')->name('batch.enrollment');
+      
+    });
+    Route::controller(StudentClassController::class)->group(function () {
+        Route::get('batch/{batch}/class', 'index')->name('batch.class');
+        Route::get('class/{class}/show', 'show')->name('batch.class.show');
+      
+    });
+});
+
  

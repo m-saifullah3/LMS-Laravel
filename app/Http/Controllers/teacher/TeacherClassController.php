@@ -70,7 +70,7 @@ class TeacherClassController extends Controller
 
         $class_no = 1;
 
-        if($classes > 0) {
+        if ($classes > 0) {
             $class_no = $classes + 1;
         }
 
@@ -96,7 +96,6 @@ class TeacherClassController extends Controller
             }
 
             return back()->with('success', 'Class has been successfully created');
-
         } else {
             return back()->with('error', 'Class has failed to create');
         }
@@ -111,7 +110,11 @@ class TeacherClassController extends Controller
      */
     public function show(TeacherClass $teacherClass)
     {
-        //
+
+        $data = [
+            'class' => $teacherClass,
+        ];
+        return view('teacher.classes.show',  $data);
     }
 
     /**

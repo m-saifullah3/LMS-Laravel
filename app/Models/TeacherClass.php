@@ -18,4 +18,9 @@ class TeacherClass extends Model
         'tasks',
         'file',
     ];
+
+
+    public function batch() {
+        return $this->belongsTo(Batch::class);
+    }
 }

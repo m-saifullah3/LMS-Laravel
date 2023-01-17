@@ -1,6 +1,6 @@
-@extends('layouts.teacher.main')
+@extends('layouts.student.main')
 
-@section('title', 'Teacher | Classes')
+@section('title', 'Student | Classes')
 
 @section('contents')
     <main>
@@ -12,9 +12,8 @@
                             <h3 class="">Classes</h3>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{ route('teacher.batches') }}" class="btn btn-outline-primary">Towards Batches</a>
-                            <a href="{{ route('teacher.students.class.create', $batch) }}"
-                                class="btn btn-outline-primary">Create Class</a>
+                            <a href="{{ route('student.batch.enrollment', $batch) }}" class="btn btn-outline-primary">Towards Batches</a>
+                            
                         </div>
                     </div>
 
@@ -39,7 +38,7 @@
                                         <td>{{ $class->class_no }}</td>
                                         <td>{{ $class->topic }}</td>
                                         <td>{{ $class->date }}</td>
-                                        <td> <a href="{{ route('teacher.students.class.show', $class) }}"
+                                        <td> <a href="{{ route('student.batch.class.show', $class) }}"
                                                 class="btn btn-primary btn-sm">Show</a>
                                         </td>
                                     </tr>
