@@ -38,18 +38,12 @@
                                         <td>{{ $enrollment->batch->starting_date->format('d-M-Y') }}</td>
                                         <td>{{ $enrollment->batch->ending_date->format('d-M-Y') }}</td>
                                         <td>
-                                            Actions
-                                             <a href="{{ route('student.batch.class', $enrollment->batch) }}"
-                                                class="btn btn-primary btn-sm">Class</a>
-{{--
-                                            <a href="{{ route('teacher.student.attendances.index', $batch) }}"
+                                            <a href="{{ route('student.batch.class', $enrollment->batch) }}"
+                                                class="btn btn-primary btn-sm">Classes</a>
+                                            <a href="{{ route('student.batch.attendance', $enrollment->batch) }}"
                                                 class="btn btn-primary btn-sm">Attendance</a>
-
-                                            <a href="{{ route('teacher.student.remarks.index', $batch) }}"
+                                            <a href="{{ route('student.batch.remarks', $enrollment->batch) }}"
                                                 class="btn btn-primary btn-sm">Remarks</a>
-
-                                            <a href="{{ route('teacher.student.classes.index', $batch) }}"
-                                                class="btn btn-primary btn-sm">Classes</a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

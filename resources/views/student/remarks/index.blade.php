@@ -1,6 +1,6 @@
 @extends('layouts.student.main')
 
-@section('title', 'Student | Classes')
+@section('title', 'Student | Remarks')
 
 @section('contents')
     <main>
@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="">Classes</h3>
+                            <h3 class="">Remarks</h3>
                         </div>
                         <div class="col-6 text-end">
                             <a href="{{ route('student.batch.enrollment', $batch) }}" class="btn btn-outline-primary">Back</a>
@@ -19,38 +19,31 @@
 
                 </div>
                 <div class="card-body">
-                    @include('partials.alerts')
 
-                    @if (count($batch->classes) > 0)
-                        <table class="table table-bordered text-center  " id="table-bhai">
-                            <thead>
+                    @if (count($remarks) > 0)
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Week</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($remarks as $item)
                                 <tr>
-                                    <th>Class No.</th>
-                                    <th>Topic</th>
-                                    <th>Date</th>
-                                    <th>Action</th>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->week }}</td>
+                                    <td>{{ $item->remarks }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach ($batch->classes as $class)
-                                    <tr>
-                                        <td>{{ $class->class_no }}</td>
-                                        <td>{{ $class->topic }}</td>
-                                        <td>{{ $class->date }}</td>
-                                        <td> <a href="{{ route('student.batch.class.show', $class) }}"
-                                                class="btn btn-primary btn-sm">Show</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                            @endforeach
+                        </tbody>
+                    </table>
                     @else
-                        <div class="alert alert-danger">
-                            No Record Found!
-                        </div>
+                        <div class="alert alert-danger text-center" role="alert">No record Found</div>
                     @endif
 
+                    
                 </div>
             </div>
         </div>
