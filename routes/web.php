@@ -77,9 +77,9 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('teachers', 'index')->name('teachers');
         Route::get('add/teacher', 'create')->name('teacher.create');
         Route::post('add/teacher', 'store');
-        Route::get('teacher/{teacher}/profile', 'show')->name('teacher.profile');
         Route::get('edit/{teacher}/teacher', 'edit')->name('teacher.edit');
         Route::post('edit/{teacher}/teacher', 'update');
+        Route::get('teacher/{teacher}/profile', 'show')->name('teacher.profile');
     });
 
     Route::controller(StudentController::class)->group(function () {
@@ -109,7 +109,7 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
 
     // Route::get('dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
 
-    Route::controller(TeacherDashboardController::class)->group(function () { 
+    Route::controller(TeacherDashboardController::class)->group(function () {
         Route::get('dashboard', 'index')->name('dashboard');
         Route::get('/profile', 'show')->name('profile');
 
@@ -118,22 +118,22 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
     });
 
     Route::get('batches',[TeacherBatchController::class,'index'] )->name('batches');
-    
+
     Route::get('batch/{batch}/students',[TeacherStudentController::class,'index'] )->name('batch.students');
 
-    Route::controller(TeacherAttendenceController::class)->group(function () { 
+    Route::controller(TeacherAttendenceController::class)->group(function () {
         Route::get('student/{batch}/attendances', 'index')->name('student.attendances.index');
         Route::get('students/{batch}/attendance', 'create')->name('students.attendance.create');
         Route::post('students/{batch}/attendance', 'store');
     });
 
-    Route::controller(TeacherRemarksController::class)->group(function () {   
+    Route::controller(TeacherRemarksController::class)->group(function () {
         Route::get('student/{batch}/remarks', 'index')->name('student.remarks.index');
         Route::get('students/{batch}/remarks', 'create')->name('students.remarks.create');
         Route::post('students/{batch}/remarks', 'store');
     });
 
-    Route::controller(TeacherClassController::class)->group(function () {   
+    Route::controller(TeacherClassController::class)->group(function () {
         Route::get('student/{batch}/classes', 'index')->name('student.classes.index');
         Route::get('students/{batch}/class', 'create')->name('students.class.create');
         Route::post('students/{batch}/class', 'store');
@@ -151,7 +151,7 @@ Route::prefix('teacher')->name('teacher.')->middleware(Authenticate::class)->gro
 
 Route::prefix('student')->name('student.')->middleware(Authenticate::class)->group(function () {
     Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
-  
+
     Route::controller(StudentBatchController::class)->group(function () {
         Route::get('batch/{student}/enrollment', 'index')->name('batch.enrollment');
     });
@@ -171,4 +171,4 @@ Route::prefix('student')->name('student.')->middleware(Authenticate::class)->gro
 
 });
 
- 
+

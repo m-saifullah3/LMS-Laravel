@@ -96,13 +96,13 @@ class BatchController extends Controller
         // Teacher
         // Shift
 
-        // (course AND teacher) AND shift 
+        // (course AND teacher) AND shift
 
         // Course
         // Teacher
         // Start Date
 
-        // (course AND teacher) AND start date 
+        // (course AND teacher) AND start date
 
         // Select * from batches WHERE (course=course AND teacher=tecaher AND shift=shift) OR (course=course AND teacher=tecaher AND start=start)
 

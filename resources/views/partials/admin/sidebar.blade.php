@@ -16,14 +16,14 @@
                 Shifts
             </a>
 
-            <a class="nav-link" href="{{ route('admin.batches') }}">
-                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                Batches
-            </a>
-
             <a class="nav-link" href="{{ route('admin.teachers') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                 Teachers
+            </a>
+            
+            <a class="nav-link" href="{{ route('admin.batches') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                Batches
             </a>
 
             <a class="nav-link" href="{{ route('admin.students') }}">

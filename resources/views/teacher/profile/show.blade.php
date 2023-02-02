@@ -33,12 +33,8 @@
                                         <span class="text-white badge bg-success mb-3">Active</span>
                                     @else
                                         <p class="text-white badge bg-danger  mb-3">Inactive</p>
-                                    @endif   
+                                    @endif
                                       <p class="text-muted mb-">{{ $teacher->qualification }}</p>
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <a href="{{ route('admin.teacher.edit', $teacher) }}" class="btn btn-primary">Edit
-                                            Profile</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +108,7 @@
                         </div>
                     </div>
 
-                     
+
                 </div>
             </div>
     </main>
